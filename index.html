@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultSoft — Free Tools for Windows</title>
+  <meta name="description" content="Portable, bloat-free Windows utilities from VaultSoft. No installers, no subscriptions, no nonsense.">
+  <meta property="og:title" content="VaultSoft — Free Tools for Windows">
+  <meta property="og:description" content="Portable, bloat-free Windows utilities. No installers, no subscriptions, no nonsense.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #07091A;
+      --bg-card:  #0C1428;
+      --bg-card2: #101C38;
+      --border:   rgba(255,255,255,0.06);
+      --border-hi:rgba(255,255,255,0.13);
+      --accent:   #2AFFD5;
+      --accent-d: rgba(42,255,213,0.09);
+      --accent-g: rgba(42,255,213,0.20);
+      --text:     #DDE8FF;
+      --muted:    #6B8199;
+      --dim:      #33506A;
+      --r:        12px;
+      --r-lg:     18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 64px;
+      background: rgba(7,9,26,0.88);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 7px; }
+    .nav-brand-copy { display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-brand-copy strong { font-size: 0.95rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .nav-brand-copy small { font-size: 0.67rem; color: var(--muted); }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border);
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); }
+
+    .btn-accent {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 700;
+      color: #07091A; background: var(--accent);
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 0 22px var(--accent-g);
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    #hero {
+      padding: 160px 6% 80px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute; pointer-events: none;
+      width: 900px; height: 600px;
+      top: 0; left: 50%; transform: translateX(-50%);
+      background: radial-gradient(ellipse at top, rgba(42,255,213,0.07) 0%, transparent 65%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42,255,213,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42,255,213,0.028) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 100%);
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 13px; margin-bottom: 28px;
+      background: var(--accent-d);
+      border: 1px solid rgba(42,255,213,0.22);
+      border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.04em; color: #fff; margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-body {
+      font-size: 1.1rem; color: var(--muted);
+      line-height: 1.7; margin-bottom: 48px; max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ─── APPS SECTION ─── */
+    #apps {
+      padding: 80px 6% 120px; flex: 1;
+    }
+    .apps-inner { max-width: 900px; margin: 0 auto; }
+
+    .apps-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 36px 32px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .app-card:hover {
+      border-color: rgba(42,255,213,0.22);
+      background: var(--bg-card2); transform: translateY(-4px);
+    }
+
+    .app-card-icon {
+      width: 52px; height: 52px; border-radius: 13px; margin-bottom: 20px;
+      background: var(--accent-d);
+      border: 1px solid rgba(42,255,213,0.14);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .app-card-icon svg { width: 26px; height: 26px; }
+
+    .app-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    .app-card h2 {
+      font-size: 1.5rem; font-weight: 800; color: #fff;
+      letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .app-card p {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 24px; flex: 1;
+    }
+
+    .app-tags {
+      display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.68rem; font-weight: 600; padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(42,255,213,0.08);
+      border: 1px solid rgba(42,255,213,0.14);
+      color: var(--accent);
+    }
+
+    .app-card .btn-view {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border-radius: 9px;
+      font-size: 0.875rem; font-weight: 700;
+      color: #07091A; background: var(--accent);
+      text-decoration: none; align-self: flex-start;
+      transition: opacity 0.18s, transform 0.15s;
+      box-shadow: 0 0 18px var(--accent-g);
+    }
+    .app-card .btn-view:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+      margin-top: auto;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .footer-brand img { width: 28px; height: 28px; border-radius: 6px; opacity: 0.75; }
+    .footer-brand-copy { display: flex; flex-direction: column; line-height: 1.25; }
+    .footer-brand-copy strong { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .footer-brand-copy small { font-size: 0.7rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 0.8rem; color: var(--muted); text-decoration: none;
+      transition: color 0.18s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.73rem; color: var(--dim); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      nav { padding: 0 4%; }
+      .nav-right .btn-ghost { display: none; }
+      #hero { padding: 130px 4% 60px; }
+      #apps { padding: 60px 4% 80px; }
+      .apps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a class="nav-brand" href="#">
+    <img src="logo.png" alt="VaultSoft">
+    <div class="nav-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, free and simple</small>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a class="btn-ghost" href="https://github.com/VaultSoft" target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+      </svg>
+      GitHub
+    </a>
+    <a class="btn-accent" href="https://ko-fi.com/vaultsoft" target="_blank" rel="noopener noreferrer">
+      ☕ Ko-fi
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="badge">Free &amp; Open Source</div>
+    <h1>Free tools for Windows,<br><em>built with care.</em></h1>
+    <p class="hero-body">
+      Portable, bloat-free utilities from VaultSoft. No installers, no subscriptions, no nonsense.
+    </p>
+  </div>
+</section>
+
+<!-- ═══ APPS ═══ -->
+<section id="apps">
+  <div class="apps-inner">
+    <div class="apps-grid">
+
+      <!-- PulseMonitor -->
+      <div class="app-card">
+        <div class="app-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="app-label">PC Health Monitor</div>
+        <h2>PulseMonitor</h2>
+        <p>Real-time CPU, GPU, RAM and disk stats in a clean desktop overlay. Always visible, never in the way.</p>
+        <div class="app-tags">
+          <span class="tag">v1.1.0</span>
+          <span class="tag">Free</span>
+          <span class="tag">Portable</span>
+        </div>
+        <a class="btn-view" href="https://vaultsoft.github.io/PulseMonitor/">
+          View App
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- SweptPC -->
+      <div class="app-card">
+        <div class="app-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+          </svg>
+        </div>
+        <div class="app-label">PC Cleaner</div>
+        <h2>SweptPC</h2>
+        <p>Scan and remove junk files, browser cache, temp files and more in one click. Free and fully portable.</p>
+        <div class="app-tags">
+          <span class="tag">v1.0.0</span>
+          <span class="tag">Free</span>
+          <span class="tag">Portable</span>
+        </div>
+        <a class="btn-view" href="https://vaultsoft.github.io/SweptPC/">
+          View App
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <a class="footer-brand" href="https://github.com/VaultSoft" target="_blank" rel="noopener noreferrer">
+    <img src="logo.png" alt="VaultSoft logo">
+    <div class="footer-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, free and simple.</small>
+    </div>
+  </a>
+  <div class="footer-links">
+    <a href="https://github.com/VaultSoft" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://ko-fi.com/vaultsoft" target="_blank" rel="noopener noreferrer">Ko-fi</a>
+  </div>
+  <p class="footer-copy">© 2026 VaultSoft. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
