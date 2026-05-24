@@ -13,6 +13,88 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "VaultSoft",
+    "url": "https://vaultsoft.github.io/",
+    "description": "Portable, bloat-free Windows utilities from VaultSoft. No installers, no subscriptions, no nonsense.",
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
+          "name": "PulseMonitor",
+          "description": "Free real-time CPU, GPU, RAM, disk and network monitor for Windows.",
+          "url": "https://vaultsoft.github.io/PulseMonitor/",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Windows 10, Windows 11"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
+          "name": "SweptPC",
+          "description": "Free portable PC cleaner for Windows. Removes junk files, browser cache and temp files in one click.",
+          "url": "https://vaultsoft.github.io/SweptPC/",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Windows 10, Windows 11"
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is VaultSoft?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "VaultSoft is an independent developer making free, portable Windows utilities. Every tool is designed to be simple, lightweight, and useful — no subscriptions, no bloat, no installers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are the tools free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, completely free. All VaultSoft tools are free to download and use forever. There are no trials, no premium tiers, and no hidden costs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do the tools need to be installed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Every VaultSoft tool is fully portable — just download the .exe and run it. No installer, no admin rights required, no dependencies. They even run off a USB drive."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are VaultSoft tools safe?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. All tools are built with Python and packaged with PyInstaller, so some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Full source code is available on GitHub for anyone to review."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which versions of Windows are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All VaultSoft tools support Windows 10 and Windows 11 (64-bit). They work on desktops, laptops, and workstations."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -218,6 +300,33 @@
     .footer-links a:hover { color: var(--text); }
     .footer-copy { font-size: 0.73rem; color: var(--dim); }
 
+    /* ─── FAQ ─── */
+    #faq {
+      padding: 80px 6% 100px;
+      background: linear-gradient(180deg, #060916 0%, var(--bg) 100%);
+    }
+    .faq-inner { max-width: 700px; margin: 0 auto; }
+    .faq-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .faq-title {
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.03em; color: #fff;
+      line-height: 1.1; margin-bottom: 44px;
+    }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      font-size: 1rem; font-weight: 700; color: #fff;
+      margin-bottom: 9px; letter-spacing: -0.01em;
+    }
+    .faq-a { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 700px) {
       nav { padding: 0 4%; }
@@ -259,7 +368,7 @@
   <div class="hero-inner">
     <img src="Vault_Soft_Logo.png" alt="VaultSoft" style="width:110px;height:110px;border-radius:50%;margin-bottom:28px;display:block;margin-left:auto;margin-right:auto;">
     <div class="badge">Free &amp; Open Source</div>
-    <h1>Free tools for Windows,<br><em>built with care.</em></h1>
+    <h1>Free Portable Windows Utilities —<br><em>no install, no nonsense.</em></h1>
     <p class="hero-body">
       Portable, bloat-free utilities from VaultSoft. No installers, no subscriptions, no nonsense.
     </p>
@@ -311,6 +420,42 @@
           View App
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-label">FAQ</div>
+    <h2 class="faq-title">Common questions</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <h3 class="faq-q">What is VaultSoft?</h3>
+        <p class="faq-a">VaultSoft is an independent developer making free, portable Windows utilities. Every tool is built to be simple, lightweight, and actually useful — no subscriptions, no bloat, no installers.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">Are the tools free?</h3>
+        <p class="faq-a">Yes, completely. All VaultSoft tools are free to download and use forever. No trials, no premium tiers, no hidden costs. You can support development on Ko-fi if you'd like, but it's entirely optional.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">Do they need to be installed?</h3>
+        <p class="faq-a">No. Every VaultSoft tool is fully portable — just download the .exe and run it. No installer, no admin rights required, no dependencies to sort out. They even work off a USB drive.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">Are they safe? Will my antivirus flag them?</h3>
+        <p class="faq-a">All tools are safe. Because they're portable .exe files built with PyInstaller, some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Full source code is on GitHub for anyone to review.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-q">Which versions of Windows are supported?</h3>
+        <p class="faq-a">All VaultSoft tools support Windows 10 and Windows 11 (64-bit). They work on desktops, laptops, and workstations.</p>
       </div>
 
     </div>
