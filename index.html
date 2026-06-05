@@ -43,6 +43,17 @@
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Windows 10, Windows 11"
         }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
+          "name": "WaveScout",
+          "description": "Free portable WiFi analyser for Windows. Scan nearby networks, check signal strength, find the best channel and monitor your connection live.",
+          "url": "https://vaultsoft.github.io/WaveScout/",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Windows 10, Windows 11"
+        }
       }
     ]
   }
@@ -280,6 +291,20 @@
     }
     .app-card .btn-view:hover { opacity: 0.88; transform: translateY(-1px); }
 
+    .app-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .app-actions .btn-view { align-self: auto; }
+    .app-card .btn-ghost-sm {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 18px; border-radius: 9px;
+      font-size: 0.875rem; font-weight: 600;
+      color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border);
+      transition: color 0.18s, border-color 0.18s, transform 0.15s;
+    }
+    .app-card .btn-ghost-sm:hover {
+      color: var(--text); border-color: var(--border-hi); transform: translateY(-1px);
+    }
+
     /* ─── FOOTER ─── */
     footer {
       border-top: 1px solid var(--border);
@@ -422,6 +447,36 @@
           View App
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+      </div>
+
+      <!-- WaveScout -->
+      <div class="app-card">
+        <div class="app-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+            <line x1="12" y1="20" x2="12.01" y2="20"/>
+          </svg>
+        </div>
+        <div class="app-label">WiFi Analyser</div>
+        <h2>WaveScout</h2>
+        <p>Free portable WiFi analyser for Windows. Scan nearby networks, check signal strength, find the best channel and monitor your connection live.</p>
+        <div class="app-tags">
+          <span class="tag">v1.0.0</span>
+          <span class="tag">Free</span>
+          <span class="tag">Portable</span>
+        </div>
+        <div class="app-actions">
+          <a class="btn-view" href="https://github.com/VaultSoft/WaveScout/releases/download/v1.0.0/WaveScout_v1.0.0_Portable.zip">
+            Download
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          </a>
+          <a class="btn-ghost-sm" href="https://vaultsoft.github.io/WaveScout/">
+            View App
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
       </div>
 
     </div>
