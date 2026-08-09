@@ -1,5 +1,8 @@
 name: Zip champion SFX packs
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main]
@@ -21,7 +24,8 @@ jobs:
           for dir in downloads/*/; do
             name=$(basename "$dir")
             if [ "$name" != "zips" ]; then
-              zip -r -j "downloads/zips/${name}.zip" "$dir"
+              rm -f "downloads/zips/${name}.zip"
+              (cd "$dir" && zip -r -X "../zips/${name}.zip" .)
               echo "Zipped $name"
             fi
           done
