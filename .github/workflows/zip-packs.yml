@@ -45,8 +45,8 @@ jobs:
               count=$((count + 1))
             done
           done
-          echo "Built ${count} champion zips"
-          ls -lhS /tmp/zips | head -20
+          echo "Built ${count} champion zips, total $(du -sh /tmp/zips | cut -f1)"
+          ls -lhS /tmp/zips | head -20 || true
 
       - name: Publish zips to the sound-packs release
         env:
