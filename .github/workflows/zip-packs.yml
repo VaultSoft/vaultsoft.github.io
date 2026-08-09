@@ -21,12 +21,18 @@ jobs:
       - name: Zip each champion folder
         run: |
           mkdir -p downloads/zips
-          for dir in downloads/*/; do
-            name=$(basename "$dir")
-            if [ "$name" != "zips" ]; then
-              rm -f "downloads/zips/${name}.zip"
-              (cd "$dir" && zip -r -X "../zips/${name}.zip" .)
-              echo "Zipped $name"
+          for category in downloads/*/; do
+            catname=$(basename "$category")
+            if [ "$catname" != "zips" ]; then
+              for champdir in "$category"*/; do
+                if [ -d "$champdir" ]; then
+                  champname=$(basename "$champdir")
+                  mkdir -p "downloads/zips/${catname}"
+                  rm -f "downloads/zips/${catname}/${champname}.zip"
+                  (cd "$champdir" && zip -r -X "../../zips/${catname}/${champname}.zip" .)
+                  echo "Zipped ${catname}/${champname}"
+                fi
+              done
             fi
           done
 
