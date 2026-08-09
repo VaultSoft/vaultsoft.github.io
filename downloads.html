@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>FatherOfDraven — Sound Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1116;
+    --surface:#171B21;
+    --surface-hover:#1E232B;
+    --border:#262C35;
+    --gold:#C89B3C;
+    --gold-bright:#E8BE5C;
+    --teal:#2DD8C9;
+    --text:#F1EEE4;
+    --text-mute:#888E98;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding:0 0 4rem;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 2rem;}
+
+  header{
+    padding:4rem 2rem 3rem;
+    border-bottom:1px solid var(--border);
+    background:
+      radial-gradient(ellipse 800px 300px at 15% 0%, rgba(200,155,60,0.09), transparent),
+      radial-gradient(ellipse 600px 300px at 85% 20%, rgba(45,216,201,0.06), transparent);
+  }
+  .eyebrow{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:12.5px;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:1rem;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+  }
+  h1{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:52px;
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    max-width:640px;
+  }
+  h1 span{color:var(--gold);}
+  .sub{
+    color:var(--text-mute);
+    font-size:16px;
+    max-width:520px;
+    margin-top:1.1rem;
+    line-height:1.6;
+  }
+  .stats{
+    display:flex;
+    gap:2.5rem;
+    margin-top:2.2rem;
+  }
+  .stat-num{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:26px;
+    color:var(--text);
+  }
+  .stat-label{
+    font-size:12px;
+    color:var(--text-mute);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-top:2px;
+  }
+
+  .controls{
+    padding:2rem 0 1.5rem;
+    display:flex;
+    gap:12px;
+  }
+  .search{
+    flex:1;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:12px 16px;
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+  }
+  .search::placeholder{color:var(--text-mute);}
+  .search:focus{outline:none;border-color:var(--gold);}
+  .count{
+    align-self:center;
+    font-size:13px;
+    color:var(--text-mute);
+    white-space:nowrap;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:12px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 18px 16px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .card:hover{
+    border-color:var(--gold);
+    background:var(--surface-hover);
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:14px;
+  }
+  .champ-name{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:19px;
+  }
+  .file-count{
+    font-size:11.5px;
+    color:var(--text-mute);
+    margin-top:2px;
+  }
+  .wave{
+    display:flex;
+    align-items:flex-end;
+    gap:2px;
+    height:28px;
+  }
+  .wave span{
+    width:3px;
+    background:var(--teal);
+    border-radius:1px;
+    opacity:0.55;
+    transition:height .2s ease, opacity .2s ease;
+  }
+  .card:hover .wave span{opacity:1;}
+  .dl-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:9px 0;
+    background:transparent;
+    border:1px solid var(--border);
+    border-radius:6px;
+    color:var(--text-mute);
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .card:hover .dl-btn{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+  }
+
+  footer{
+    margin-top:3rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--border);
+    font-size:12.5px;
+    color:var(--text-mute);
+    line-height:1.7;
+  }
+  footer a{color:var(--teal);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">VaultSoft — free assets</div>
+    <h1>The FatherOfDraven <span>Sound Vault</span></h1>
+    <p class="sub">Every champion voice line and ability sound, pulled clean from game files and organized by champion. Free to download, no sign-up, no quota limits.</p>
+    <div class="stats">
+      <div><div class="stat-num">97</div><div class="stat-label">Sound packs</div></div>
+      <div><div class="stat-num">928</div><div class="stat-label">Sound files</div></div>
+      <div><div class="stat-num">0</div><div class="stat-label">Download limits</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <input class="search" id="search" type="text" placeholder="Search a champion — Jinx, Yone, Kindred...">
+    <div class="count" id="count">97 packs</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    All audio sourced from official League of Legends game files, distributed for free non-commercial fan use. Not affiliated with or endorsed by Riot Games.
+    Follow on <a href="#">TikTok</a> and <a href="#">YouTube</a> for new packs as they drop.
+  </footer>
+</div>
+
+<script>
+const packs = [{"champion": "Aatrox", "cat": "Sound Effects", "files": 2, "size": "54.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-aatrox.zip"}, {"champion": "Ahri", "cat": "Sound Effects", "files": 3, "size": "89.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ahri.zip"}, {"champion": "Akali", "cat": "Sound Effects", "files": 3, "size": "55.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-akali.zip"}, {"champion": "Ambessa", "cat": "Sound Effects", "files": 3, "size": "34.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ambessa.zip"}, {"champion": "Annie", "cat": "Sound Effects", "files": 1, "size": "9.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-annie.zip"}, {"champion": "Aphelios", "cat": "Sound Effects", "files": 2, "size": "144 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-aphelios.zip"}, {"champion": "Ashe", "cat": "Sound Effects", "files": 2, "size": "30.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ashe.zip"}, {"champion": "Atakhan", "cat": "Sound Effects", "files": 1, "size": "8.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-atakhan.zip"}, {"champion": "Aurora", "cat": "Sound Effects", "files": 1, "size": "49.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-aurora.zip"}, {"champion": "Bard", "cat": "Sound Effects", "files": 2, "size": "47.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-bard.zip"}, {"champion": "Blitzcrank", "cat": "Sound Effects", "files": 1, "size": "8.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-blitzcrank.zip"}, {"champion": "Caitlyn", "cat": "Sound Effects", "files": 5, "size": "53.0 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-caitlyn.zip"}, {"champion": "Camille", "cat": "Sound Effects", "files": 1, "size": "13.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-camille.zip"}, {"champion": "Darius", "cat": "Sound Effects", "files": 2, "size": "20.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-darius.zip"}, {"champion": "Diana", "cat": "Sound Effects", "files": 3, "size": "28.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-diana.zip"}, {"champion": "Dr Mundo", "cat": "Sound Effects", "files": 2, "size": "69.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-dr-mundo.zip"}, {"champion": "Draven", "cat": "Sound Effects", "files": 8, "size": "40.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-draven.zip"}, {"champion": "Draven", "cat": "Voice Lines", "files": 163, "size": "5.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/voice-lines-draven.zip"}, {"champion": "Ekko", "cat": "Sound Effects", "files": 5, "size": "102 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ekko.zip"}, {"champion": "Elise", "cat": "Sound Effects", "files": 2, "size": "29.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-elise.zip"}, {"champion": "Evelyn", "cat": "Sound Effects", "files": 2, "size": "26.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-evelyn.zip"}, {"champion": "Ezreal", "cat": "Sound Effects", "files": 1, "size": "15.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ezreal.zip"}, {"champion": "Fiddlesticks", "cat": "Sound Effects", "files": 1, "size": "14.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-fiddlesticks.zip"}, {"champion": "Garen", "cat": "Sound Effects", "files": 1, "size": "8.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-garen.zip"}, {"champion": "Gragas", "cat": "Sound Effects", "files": 2, "size": "10.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-gragas.zip"}, {"champion": "Graves", "cat": "Sound Effects", "files": 1, "size": "6.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-graves.zip"}, {"champion": "Gwen", "cat": "Sound Effects", "files": 1, "size": "40.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-gwen.zip"}, {"champion": "Heimerdinger", "cat": "Sound Effects", "files": 2, "size": "21.4 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-heimerdinger.zip"}, {"champion": "Illaoi", "cat": "Sound Effects", "files": 1, "size": "21.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-illaoi.zip"}, {"champion": "Ivern", "cat": "Sound Effects", "files": 1, "size": "27.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ivern.zip"}, {"champion": "Janna", "cat": "Sound Effects", "files": 1, "size": "24.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-janna.zip"}, {"champion": "Jax", "cat": "Sound Effects", "files": 1, "size": "4.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-jax.zip"}, {"champion": "Jayce", "cat": "Sound Effects", "files": 2, "size": "26.0 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-jayce.zip"}, {"champion": "Jhin", "cat": "Sound Effects", "files": 2, "size": "65.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-jhin.zip"}, {"champion": "Jinx", "cat": "Sound Effects", "files": 355, "size": "273 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-jinx.zip"}, {"champion": "Kaisa", "cat": "Sound Effects", "files": 3, "size": "130 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-kaisa.zip"}, {"champion": "Kassadin", "cat": "Sound Effects", "files": 1, "size": "11.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-kassadin.zip"}, {"champion": "Katarina", "cat": "Sound Effects", "files": 2, "size": "10.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-katarina.zip"}, {"champion": "Kindred", "cat": "Sound Effects", "files": 2, "size": "35.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-kindred.zip"}, {"champion": "Kindred", "cat": "Voice Lines", "files": 191, "size": "9.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/voice-lines-kindred.zip"}, {"champion": "LeBlanc", "cat": "Sound Effects", "files": 1, "size": "10.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-leblanc.zip"}, {"champion": "Lee Sin", "cat": "Sound Effects", "files": 2, "size": "38.4 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-lee-sin.zip"}, {"champion": "Lillia", "cat": "Sound Effects", "files": 1, "size": "12.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-lillia.zip"}, {"champion": "Lucian", "cat": "Sound Effects", "files": 2, "size": "27.4 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-lucian.zip"}, {"champion": "Lux", "cat": "Sound Effects", "files": 11, "size": "122 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-lux.zip"}, {"champion": "Master Yi", "cat": "Sound Effects", "files": 3, "size": "39.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-master-yi.zip"}, {"champion": "Mel", "cat": "Sound Effects", "files": 2, "size": "18.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-mel.zip"}, {"champion": "Misc", "cat": "Sound Effects", "files": 16, "size": "299 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-misc.zip"}, {"champion": "Miss Fortune", "cat": "Sound Effects", "files": 1, "size": "19.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-miss-fortune.zip"}, {"champion": "Neeko", "cat": "Sound Effects", "files": 2, "size": "18.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-neeko.zip"}, {"champion": "Noxus", "cat": "Sound Effects", "files": 25, "size": "108 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-noxus.zip"}, {"champion": "Nunu & Willump", "cat": "Sound Effects", "files": 1, "size": "42.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-nunu-willump.zip"}, {"champion": "Orianna", "cat": "Sound Effects", "files": 1, "size": "9.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-orianna.zip"}, {"champion": "Pantheon", "cat": "Sound Effects", "files": 2, "size": "22.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-pantheon.zip"}, {"champion": "Poppy", "cat": "Sound Effects", "files": 1, "size": "16.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-poppy.zip"}, {"champion": "Pyke", "cat": "Sound Effects", "files": 1, "size": "40.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-pyke.zip"}, {"champion": "Qiyana", "cat": "Sound Effects", "files": 2, "size": "28.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-qiyana.zip"}, {"champion": "Quinn", "cat": "Sound Effects", "files": 1, "size": "11.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-quinn.zip"}, {"champion": "Renata Glasc", "cat": "Sound Effects", "files": 2, "size": "18.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-renata-glasc.zip"}, {"champion": "Riven", "cat": "Sound Effects", "files": 1, "size": "17.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-riven.zip"}, {"champion": "Ryze", "cat": "Sound Effects", "files": 1, "size": "8.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ryze.zip"}, {"champion": "Samira", "cat": "Sound Effects", "files": 1, "size": "14.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-samira.zip"}, {"champion": "Senna", "cat": "Sound Effects", "files": 3, "size": "53.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-senna.zip"}, {"champion": "Seraphine", "cat": "Sound Effects", "files": 1, "size": "14.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-seraphine.zip"}, {"champion": "Sett", "cat": "Sound Effects", "files": 2, "size": "20.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-sett.zip"}, {"champion": "Shaco", "cat": "Sound Effects", "files": 1, "size": "29.1 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-shaco.zip"}, {"champion": "Shen", "cat": "Sound Effects", "files": 1, "size": "7.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-shen.zip"}, {"champion": "Shyvanna", "cat": "Sound Effects", "files": 1, "size": "27.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-shyvanna.zip"}, {"champion": "Singed", "cat": "Sound Effects", "files": 2, "size": "11.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-singed.zip"}, {"champion": "Sivir", "cat": "Sound Effects", "files": 1, "size": "15.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-sivir.zip"}, {"champion": "Smolder", "cat": "Sound Effects", "files": 1, "size": "39.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-smolder.zip"}, {"champion": "Sona", "cat": "Sound Effects", "files": 1, "size": "20.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-sona.zip"}, {"champion": "Swain", "cat": "Sound Effects", "files": 3, "size": "37.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-swain.zip"}, {"champion": "Sylas", "cat": "Sound Effects", "files": 2, "size": "30.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-sylas.zip"}, {"champion": "Teemo", "cat": "Sound Effects", "files": 2, "size": "37.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-teemo.zip"}, {"champion": "Thresh", "cat": "Sound Effects", "files": 2, "size": "22.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-thresh.zip"}, {"champion": "Trundle", "cat": "Sound Effects", "files": 2, "size": "15.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-trundle.zip"}, {"champion": "Twitch", "cat": "Sound Effects", "files": 1, "size": "33.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-twitch.zip"}, {"champion": "Urgot", "cat": "Sound Effects", "files": 1, "size": "15.6 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-urgot.zip"}, {"champion": "Vayne", "cat": "Sound Effects", "files": 1, "size": "18.7 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-vayne.zip"}, {"champion": "Veigar", "cat": "Sound Effects", "files": 1, "size": "40.3 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-veigar.zip"}, {"champion": "Velkoz", "cat": "Sound Effects", "files": 1, "size": "14.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-velkoz.zip"}, {"champion": "Vex", "cat": "Sound Effects", "files": 1, "size": "57.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-vex.zip"}, {"champion": "Vi", "cat": "Sound Effects", "files": 2, "size": "19.0 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-vi.zip"}, {"champion": "Viego", "cat": "Sound Effects", "files": 1, "size": "34.4 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-viego.zip"}, {"champion": "Viktor", "cat": "Sound Effects", "files": 3, "size": "46.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-viktor.zip"}, {"champion": "Vladimir", "cat": "Sound Effects", "files": 1, "size": "5.0 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-vladimir.zip"}, {"champion": "Volibear", "cat": "Sound Effects", "files": 2, "size": "39.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-volibear.zip"}, {"champion": "Warwick", "cat": "Sound Effects", "files": 4, "size": "27.5 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-warwick.zip"}, {"champion": "Yasuo", "cat": "Sound Effects", "files": 4, "size": "93.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-yasuo.zip"}, {"champion": "Yone", "cat": "Sound Effects", "files": 3, "size": "87.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-yone.zip"}, {"champion": "Yorick", "cat": "Sound Effects", "files": 2, "size": "34.2 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-yorick.zip"}, {"champion": "Yummi", "cat": "Sound Effects", "files": 1, "size": "15.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-yummi.zip"}, {"champion": "Zed", "cat": "Sound Effects", "files": 4, "size": "24.9 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-zed.zip"}, {"champion": "Zeri", "cat": "Sound Effects", "files": 2, "size": "77.0 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-zeri.zip"}, {"champion": "Ziggs", "cat": "Sound Effects", "files": 1, "size": "11.4 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-ziggs.zip"}, {"champion": "Zoe", "cat": "Sound Effects", "files": 2, "size": "67.8 MB", "url": "https://github.com/VaultSoft/vaultsoft.github.io/releases/download/sound-packs/sound-effects-zoe.zip"}];
+function makeWave(){ let b=""; for(let i=0;i<14;i++){ b+=`<span style="height:${6+Math.round(Math.random()*20)}px"></span>`;} return b; }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function render(list){
+  const grid=document.getElementById('grid'); grid.innerHTML="";
+  list.forEach(p=>{
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`
+      <div class="card-top">
+        <div>
+          <div class="champ-name">${esc(p.champion)}</div>
+          <div class="file-count">${esc(p.cat)} &middot; ${p.files} files &middot; ${p.size}</div>
+        </div>
+        <div class="wave">${makeWave()}</div>
+      </div>
+      <a class="dl-btn" href="${p.url}" download>Download pack</a>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('count').textContent=list.length+(list.length===1?" pack":" packs");
+}
+document.getElementById('search').addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase();
+  render(packs.filter(p=>(p.champion+" "+p.cat).toLowerCase().includes(q)));
+});
+render(packs);
+</script>
+
+
+
+</body></html>
