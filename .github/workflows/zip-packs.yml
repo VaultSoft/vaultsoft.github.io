@@ -1,0 +1,33 @@
+name: Zip champion SFX packs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/**'
+      - '!downloads/zips/**'
+  workflow_dispatch:
+
+jobs:
+  build-zips:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Zip each champion folder
+        run: |
+          mkdir -p downloads/zips
+          for dir in downloads/*/; do
+            name=$(basename "$dir")
+            if [ "$name" != "zips" ]; then
+              zip -r -j "downloads/zips/${name}.zip" "$dir"
+              echo "Zipped $name"
+            fi
+          done
+
+      - name: Commit zip files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-generate champion zip packs"
+          file_pattern: "downloads/zips/*.zip"
