@@ -26,6 +26,17 @@
         "@type": "Offer",
         "itemOffered": {
           "@type": "SoftwareApplication",
+          "name": "VaultSoft Hub",
+          "description": "Free portable launcher for every VaultSoft app. Install, update and run PulseMonitor, SweptPC and WaveScout from a single window.",
+          "url": "https://github.com/VaultSoft/vaultsoft-hub",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Windows 10, Windows 11"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
           "name": "PulseMonitor",
           "description": "Free real-time CPU, GPU, RAM, disk and network monitor for Windows.",
           "url": "https://vaultsoft.github.io/PulseMonitor/",
@@ -291,6 +302,8 @@
     }
     .app-card .btn-view:hover { opacity: 0.88; transform: translateY(-1px); }
 
+    /* Filled at load from the Releases API; stays hidden if that fails. */
+    #hub-version:empty { display: none; }
     .app-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .app-actions .btn-view { align-self: auto; }
     .app-card .btn-ghost-sm {
@@ -421,7 +434,7 @@
         <h2>VaultSoft Hub</h2>
         <p>One launcher for every VaultSoft app — install, update, and run PulseMonitor, SweptPC and WaveScout from a single window.</p>
         <div class="app-tags">
-          <span class="tag">v1.0.1</span>
+          <span class="tag" id="hub-version"></span>
           <span class="tag">Free</span>
           <span class="tag">Portable</span>
         </div>
@@ -558,6 +571,23 @@
   </div>
   <p class="footer-copy">© 2026 VaultSoft. All rights reserved.</p>
 </footer>
+
+<!-- Keeps the Hub card's version pill in step with the latest GitHub release. -->
+<script>
+  (function () {
+    var el = document.getElementById('hub-version');
+    if (!el || !window.fetch) return;
+    fetch('https://api.github.com/repos/VaultSoft/vaultsoft-hub/releases/latest', {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        var tag = data && data.tag_name;
+        if (tag) el.textContent = 'v' + String(tag).replace(/^v/i, '');
+      })
+      .catch(function () { /* offline or rate-limited: leave the pill blank */ });
+  })();
+</script>
 
 </body>
 </html>
