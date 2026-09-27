@@ -65,6 +65,17 @@
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Windows 10, Windows 11"
         }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
+          "name": "ScribeVault",
+          "description": "Offline transcription for Windows. Recordings are turned into text on your own PC, and ScribeVault itself never opens a network connection. Free trial available.",
+          "url": "https://vaultsoft.co.uk/scribevault/",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Windows 10, Windows 11"
+        }
       }
     ]
   }
@@ -87,7 +98,7 @@
         "name": "Are the tools free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, completely free. All VaultSoft tools are free to download and use forever. There are no trials, no premium tiers, and no hidden costs."
+          "text": "Most VaultSoft tools are free and open source, and always will be — no trials, no premium tiers, no hidden costs. ScribeVault is the exception: a paid privacy app with a free trial. You can support the free tools on Ko-fi if you'd like, but it's entirely optional."
         }
       },
       {
@@ -103,7 +114,7 @@
         "name": "Are VaultSoft tools safe?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. All tools are built with Python and packaged with PyInstaller, so some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Full source code is available on GitHub for anyone to review."
+          "text": "Yes. All tools are built with Python and packaged with PyInstaller, so some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Source code for the free tools is on GitHub for anyone to review. ScribeVault's source isn't public, but it never opens a network connection, and its test suite checks that on every build."
         }
       },
       {
@@ -516,6 +527,34 @@
         </div>
       </div>
 
+      <!-- ScribeVault -->
+      <div class="app-card">
+        <div class="app-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="2.5" width="6" height="11" rx="3"/>
+            <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/>
+          </svg>
+        </div>
+        <div class="app-label">Offline Transcription</div>
+        <h2>ScribeVault</h2>
+        <p>Turn interviews, meetings and dictation into text on your own PC. Nothing is uploaded: ScribeVault itself never opens a network connection. Free trial; £49 licence coming soon.</p>
+        <div class="app-tags">
+          <span class="tag">v1.0</span>
+          <span class="tag">Free trial</span>
+          <span class="tag">Private</span>
+        </div>
+        <div class="app-actions">
+          <a class="btn-view" href="https://vaultsoft.co.uk/scribevault/">
+            View App
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn-ghost-sm" href="https://vaultsoft.co.uk/scribevault/#download">
+            Download trial
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -534,7 +573,7 @@
 
       <div class="faq-item">
         <h3 class="faq-q">Are the tools free?</h3>
-        <p class="faq-a">Yes, completely. All VaultSoft tools are free to download and use forever. No trials, no premium tiers, no hidden costs. You can support development on Ko-fi if you'd like, but it's entirely optional.</p>
+        <p class="faq-a">Most VaultSoft tools are free and open source, and always will be — no trials, no premium tiers, no hidden costs. ScribeVault is the exception: a paid privacy app with a free trial. You can support the free tools on <a href="https://ko-fi.com/vaultsoft" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Ko-fi</a> if you'd like, but it's entirely optional.</p>
       </div>
 
       <div class="faq-item">
@@ -544,7 +583,7 @@
 
       <div class="faq-item">
         <h3 class="faq-q">Are they safe? Will my antivirus flag them?</h3>
-        <p class="faq-a">All tools are safe. Because they're portable .exe files built with PyInstaller, some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Full source code is on GitHub for anyone to review.</p>
+        <p class="faq-a">All tools are safe. Because they're portable .exe files built with PyInstaller, some antivirus software may raise a false positive — this is a known quirk with Python-packaged apps, not a sign of anything malicious. Source code for the free tools is on GitHub for anyone to review. ScribeVault's source isn't public, but it never opens a network connection, and its test suite checks that on every build.</p>
       </div>
 
       <div class="faq-item">
