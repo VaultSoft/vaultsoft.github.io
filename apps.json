@@ -31,6 +31,21 @@
       }
     },
     {
+      "id": "fileflow",
+      "name": "FileFlow",
+      "description": "Preview, organise and safely undo file moves. See every move before it happens; existing files are never overwritten.",
+      "category": "System & PC",
+      "badge": "Early release",
+      "link": "https://vaultsoft.co.uk/fileflow/",
+      "download": "https://github.com/VaultSoft/FileFlow/releases/download/v0.9.0/FileFlow_v0.9.0_Portable.zip",
+      "repo": "VaultSoft/FileFlow",
+      "released": "2026-09-27",
+      "icon": "icons/fileflow.svg",
+      "hub": {
+        "exe": "FileFlow.exe"
+      }
+    },
+    {
       "id": "batteryvault",
       "name": "BatteryVault",
       "description": "Laptop battery health at a glance: wear, charge cycles, live charge rate and time remaining, right from the tray. Currently in beta.",

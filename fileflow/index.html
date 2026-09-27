@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileFlow — Preview File Organisation Before Anything Moves</title>
+  <meta name="description" content="FileFlow sorts the files in a Windows folder into category folders. It shows every planned move first, never overwrites an existing file, and can move files back with Undo. Portable, nothing to install.">
+  <meta property="og:title" content="FileFlow — Preview file organisation before anything moves">
+  <meta property="og:description" content="Sort a folder into category folders, see every move first, and undo it later. Portable Windows app from VaultSoft.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vaultsoft.co.uk/fileflow/">
+  <meta property="og:image" content="https://vaultsoft.co.uk/fileflow/img/fileflow-preview.png">
+  <link rel="canonical" href="https://vaultsoft.co.uk/fileflow/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <!-- No web fonts, scripts or trackers: this page loads nothing from anyone else. -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FileFlow",
+    "description": "Sorts the files in a folder into category folders. Every planned move is shown first, existing files are never overwritten, and moves can be undone.",
+    "url": "https://vaultsoft.co.uk/fileflow/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+    "softwareVersion": "0.9.0",
+    "screenshot": "https://vaultsoft.co.uk/fileflow/img/fileflow-preview.png"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #07091A;
+      --bg-card:  #0C1428;
+      --border:   rgba(255,255,255,0.06);
+      --border-hi:rgba(255,255,255,0.13);
+      --accent:   #2AFFD5;
+      --accent-d: rgba(42,255,213,0.09);
+      --accent-g: rgba(42,255,213,0.20);
+      --amber:    #FFC857;
+      --text:     #DDE8FF;
+      --muted:    #8BA0B8;
+      --dim:      #4A6580;
+      --r-lg:     18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    a { color: var(--accent); }
+    code, .mono { font-family: 'Cascadia Mono', Consolas, 'Courier New', monospace; }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 64px;
+      background: rgba(7,9,26,0.88);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 7px; }
+    .nav-brand-copy { display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-brand-copy strong { font-size: 0.95rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .nav-brand-copy small { font-size: 0.67rem; color: var(--muted); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border);
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); }
+
+    .btn-accent {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 700;
+      color: #07091A; background: var(--accent);
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 0 22px var(--accent-g);
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-accent.lg { padding: 13px 26px; font-size: 1rem; border-radius: 10px; }
+    .btn-ghost.lg { padding: 12px 22px; font-size: 1rem; border-radius: 10px; }
+
+    /* ─── HERO ─── */
+    #hero { padding: 140px 6% 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero-glow {
+      position: absolute; pointer-events: none;
+      width: 900px; height: 600px; top: 0; left: 50%; transform: translateX(-50%);
+      background: radial-gradient(ellipse at top, rgba(42,255,213,0.07) 0%, transparent 65%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42,255,213,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42,255,213,0.028) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 100%);
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+    .hero-mark {
+      width: 64px; height: 64px; margin: 0 auto 22px; border-radius: 16px;
+      background: var(--accent-d); border: 1px solid rgba(42,255,213,0.22);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-mark svg { width: 34px; height: 34px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 13px; margin-bottom: 24px;
+      background: var(--accent-d); border: 1px solid rgba(42,255,213,0.22); border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; line-height: 1.07;
+      letter-spacing: -0.04em; color: #fff; margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-body {
+      font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+      max-width: 620px; margin: 0 auto 34px;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+    .hero-meta { font-size: 0.8rem; color: var(--dim); }
+    .hero-shot { max-width: 1000px; margin: 50px auto 0; position: relative; z-index: 1; }
+
+    /* ─── SECTIONS ─── */
+    section.band { padding: 70px 6%; }
+    section.band.alt { background: linear-gradient(180deg, #060916 0%, var(--bg) 100%); }
+    .inner { max-width: 960px; margin: 0 auto; }
+    .label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    h2.title {
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em;
+      color: #fff; line-height: 1.15; margin-bottom: 18px;
+    }
+    .lead { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 720px; margin-bottom: 30px; }
+    .lead strong, .card p strong, .faq-a strong, .step p strong { color: var(--text); font-weight: 600; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 26px 24px;
+    }
+    .card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    /* Workflow steps */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: step; }
+    .step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 22px 20px; position: relative;
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 9px; margin-bottom: 14px;
+      background: var(--accent-d); border: 1px solid rgba(42,255,213,0.2);
+      color: var(--accent); font-weight: 800; font-size: 0.9rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* Screenshots */
+    figure.shot { margin: 0; }
+    figure.shot img {
+      display: block; width: 100%; height: auto;
+      border-radius: 12px; border: 1px solid var(--border-hi);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 0 40px rgba(42,255,213,0.04);
+    }
+    figure.shot figcaption { font-size: 0.8rem; color: var(--dim); margin-top: 10px; text-align: center; }
+    .split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 34px; align-items: center; }
+    .split + .split { margin-top: 56px; }
+    .split.flip { grid-template-columns: 1.25fr 1fr; }
+    .split.flip .split-copy { order: 2; }
+
+    .checks { list-style: none; display: grid; gap: 10px; margin-top: 4px; }
+    .checks li { color: var(--muted); font-size: 0.93rem; padding-left: 26px; position: relative; }
+    .checks li strong { color: var(--text); font-weight: 600; }
+    .checks li::before {
+      content: ""; position: absolute; left: 0; top: 0.45em; width: 12px; height: 7px;
+      border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg);
+    }
+
+    /* The safety promise */
+    .promise {
+      background: var(--bg-card); border: 1px solid rgba(42,255,213,0.22);
+      border-radius: var(--r-lg); padding: 34px 32px;
+      box-shadow: 0 0 40px rgba(42,255,213,0.05);
+    }
+    .promise h2.title { margin-bottom: 12px; }
+    .promise .checks { margin-top: 18px; }
+    .promise .note { font-size: 0.85rem; color: var(--dim); margin-top: 20px; }
+
+    /* Limitations: amber, deliberately */
+    .limits .card { border-color: rgba(255,200,87,0.16); }
+    .limits .card h3 { color: var(--amber); }
+
+    /* Download */
+    .download { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: start; }
+    .file-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .file-row:last-of-type { border-bottom: none; }
+    .file-row span:first-child { color: var(--dim); }
+    .file-row span:last-child { color: var(--text); text-align: right; overflow-wrap: anywhere; }
+    .hash {
+      margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+      background: #050714; border: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--accent); word-break: break-all; line-height: 1.55;
+      user-select: all;
+    }
+    .hash-label { font-size: 0.72rem; color: var(--dim); margin-top: 18px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+    .howto { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+    .howto code { font-size: 0.8rem; color: var(--text); background: #050714; border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; }
+    .get-steps { list-style: none; counter-reset: get; display: grid; gap: 8px; margin-bottom: 20px; }
+    .get-steps li { counter-increment: get; font-size: 0.9rem; color: var(--muted); padding-left: 28px; position: relative; }
+    .get-steps li::before {
+      content: counter(get); position: absolute; left: 0; top: 0.1em;
+      width: 19px; height: 19px; border-radius: 6px; font-size: 0.72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); background: var(--accent-d);
+    }
+
+    /* FAQ-style notes */
+    .faq-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .faq-a { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .faq-a + .faq-a { margin-top: 10px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border); padding: 30px 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-top: auto;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .footer-brand img { width: 28px; height: 28px; border-radius: 6px; opacity: 0.75; }
+    .footer-brand-copy { display: flex; flex-direction: column; line-height: 1.25; }
+    .footer-brand-copy strong { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .footer-brand-copy small { font-size: 0.7rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.18s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.73rem; color: var(--dim); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+      .split, .split.flip { grid-template-columns: 1fr; gap: 22px; }
+      .split.flip .split-copy { order: 0; }
+    }
+    @media (max-width: 760px) {
+      nav { padding: 0 4%; }
+      .nav-right .btn-ghost { display: none; }
+      #hero { padding: 110px 4% 40px; }
+      section.band { padding: 50px 4%; }
+      .grid, .grid.three, .download, .steps { grid-template-columns: 1fr; }
+      .promise { padding: 26px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a class="nav-brand" href="/">
+    <img src="/Vault_Soft_Logo.png" alt="VaultSoft">
+    <div class="nav-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, simple and private</small>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a class="btn-ghost" href="/">All apps</a>
+    <a class="btn-accent" href="#download">Download</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21H6.5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2H13l5 5v3"/><path d="M13 3v5h5"/><path d="M13 17h8M18 14l3 3-3 3"/></svg>
+    </div>
+    <div class="badge">FileFlow 0.9 · Windows</div>
+    <h1>Preview your file organisation<br><em>before anything moves.</em></h1>
+    <p class="hero-body">
+      FileFlow sorts the files in a folder into category folders such as Documents, Images and
+      Audio. It shows you every planned move first, moves only the files you confirm, and keeps
+      a history so you can move them back.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-accent lg" href="#download">
+        Download FileFlow
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="btn-ghost lg" href="#limits">What it won't do</a>
+    </div>
+    <p class="hero-meta">Windows 10 and 11, 64-bit · 47 MB portable ZIP, nothing to install</p>
+  </div>
+  <figure class="shot hero-shot">
+    <img src="img/fileflow-preview.png" width="1266" height="793"
+         alt="FileFlow's Preview screen: fourteen files in a Downloads folder, twelve marked Ready with their exact destination folders, one collision and one unsupported file.">
+  </figure>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="band">
+  <div class="inner">
+    <div class="label">How it works</div>
+    <h2 class="title">Choose, analyse, preview, then apply.</h2>
+    <p class="lead">
+      Nothing moves until the last step. Until then FileFlow only reads the folder and shows you
+      <strong>exactly where each file would go</strong>.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <h3>Choose Folder</h3>
+        <p>Pick a messy folder, such as Downloads. FileFlow looks at the files directly inside it.</p>
+      </div>
+      <div class="step">
+        <h3>Analyse</h3>
+        <p>Built-in rules match each file by its extension to a category: Images, Documents, Videos, Audio, Installers, Archives or Code.</p>
+      </div>
+      <div class="step">
+        <h3>Preview</h3>
+        <p>Every file gets a row: <strong>Ready</strong>, <strong>Blocked</strong>, <strong>Collision</strong> or <strong>Unsupported</strong>, with its exact destination and the reason.</p>
+      </div>
+      <div class="step">
+        <h3>Apply</h3>
+        <p>Confirm, and FileFlow moves only the Ready files, checking each one again just before it moves.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HISTORY, UNDO, RULES ═══ -->
+<section class="band alt">
+  <div class="inner">
+    <div class="split">
+      <div class="split-copy">
+        <div class="label">History &amp; Undo</div>
+        <h2 class="title">Changed your mind? Move them back.</h2>
+        <p class="lead" style="margin-bottom:18px">
+          Every Apply is saved in FileFlow's history. Pick one and choose <strong>Preview Undo</strong>
+          to see which files can go back before anything moves.
+        </p>
+        <ul class="checks">
+          <li>Before moving a file back, FileFlow checks <strong>it is still the same file</strong>, in the place it moved it to.</li>
+          <li>It checks the <strong>original location is still free</strong>. If something is there now, that file is left where it is.</li>
+          <li>Undo restores a file's <strong>location</strong>, not its earlier contents. A file edited since the move goes back as it is now.</li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <img src="img/fileflow-history-undo.png" width="1266" height="793" loading="lazy"
+             alt="FileFlow's History and Undo screen: one Apply of twelve files, with an Undo preview listing each file's current location and the original location it would return to.">
+        <figcaption>History &amp; Undo: each file's current and original location, checked before anything moves.</figcaption>
+      </figure>
+    </div>
+
+    <div class="split flip">
+      <div class="split-copy">
+        <div class="label">Rules</div>
+        <h2 class="title">Simple rules you can check.</h2>
+        <p class="lead" style="margin-bottom:0">
+          FileFlow 0.9 sorts by file extension with a fixed set of built-in rules: .jpg goes to
+          Images, .pdf to Documents, .mp3 to Audio, and so on. The Rules page lists them all and
+          lets you test any filename to see where it would go. The same file always gets the same
+          answer.
+        </p>
+      </div>
+      <figure class="shot">
+        <img src="img/fileflow-rules.png" width="1266" height="793" loading="lazy"
+             alt="FileFlow's Rules screen: seven active categories with their extensions, and a filename tester showing that holiday-beach.jpg would move into Images.">
+        <figcaption>The built-in rules, with a filename tester.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SAFETY ═══ -->
+<section class="band">
+  <div class="inner">
+    <div class="promise">
+      <div class="label">Safety</div>
+      <h2 class="title">Careful by design.</h2>
+      <p class="lead" style="margin-bottom:0">
+        FileFlow does one thing, moving files into folders, and it is deliberately strict about it.
+      </p>
+      <ul class="checks">
+        <li><strong>Nothing moves until you've seen the preview</strong> and confirmed it.</li>
+        <li><strong>No overwriting.</strong> If a file with the same name is already at the destination, that file is blocked. It isn't replaced or renamed.</li>
+        <li><strong>Moves only, on the same drive.</strong> FileFlow doesn't copy or delete your files.</li>
+        <li><strong>Checked twice.</strong> Each file is checked again right before it moves, and again before Undo.</li>
+        <li><strong>Stops rather than guesses.</strong> If a move can't be confirmed, FileFlow locks Apply and Undo and shows what happened, instead of retrying.</li>
+        <li><strong>No account, no telemetry, no update checks.</strong> FileFlow has no online features.</li>
+      </ul>
+      <p class="note">FileFlow isn't a backup. Keep backups of files that matter, as you would with any tool that moves them.</p>
+    </div>
+    <figure class="shot" style="margin-top:40px">
+      <img src="img/fileflow-settings.png" width="1266" height="793" loading="lazy"
+           alt="FileFlow's Settings and Safety screen, listing its fixed boundaries: immediate child files only, same-volume moves, destination folders must exist, no overwrite or auto-rename, location-only Undo, read-only recovery and a 100-operation batch limit.">
+      <figcaption>Settings &amp; Safety: the same boundaries, shown inside the app. They're fixed, not options.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ LIMITATIONS ═══ -->
+<section class="band alt limits" id="limits">
+  <div class="inner">
+    <div class="label">Current limitations</div>
+    <h2 class="title">What FileFlow 0.9 won't do.</h2>
+    <p class="lead">Most of these are deliberate, to keep every move predictable. Please read them before you start.</p>
+    <div class="grid three">
+      <div class="card">
+        <h3>Top level only</h3>
+        <p>Only the files directly inside the folder you choose are sorted. Subfolders and their contents are left alone.</p>
+      </div>
+      <div class="card">
+        <h3>Folders must exist</h3>
+        <p>Destination folders such as <strong>Documents</strong> and <strong>Images</strong> must already exist inside the folder. FileFlow tells you which are missing, but doesn't create them.</p>
+      </div>
+      <div class="card">
+        <h3>Same drive only</h3>
+        <p>Files are moved within the same drive. FileFlow won't move files to another drive. Network shares, cloud files that aren't stored on this PC, and linked folders are blocked too.</p>
+      </div>
+      <div class="card">
+        <h3>Up to 100 files at a time</h3>
+        <p>Each Apply or Undo handles up to 100 files. A larger plan is blocked, not cut short.</p>
+      </div>
+      <div class="card">
+        <h3>No renaming around clashes</h3>
+        <p>If a file with the same name is already at the destination, that file is skipped. FileFlow never overwrites it or adds a number to the name.</p>
+      </div>
+      <div class="card">
+        <h3>No Redo, fixed rules</h3>
+        <p>There's no Redo yet, and the rules are built in: you can't edit them in this version. Windows only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DOWNLOAD ═══ -->
+<section class="band" id="download">
+  <div class="inner">
+    <div class="label">Download</div>
+    <h2 class="title">FileFlow 0.9.0</h2>
+    <div class="download">
+      <div class="card">
+        <div class="file-row"><span>File</span><span class="mono">FileFlow_v0.9.0_Portable.zip</span></div>
+        <div class="file-row"><span>Size</span><span>47 MB</span></div>
+        <div class="file-row"><span>Needs</span><span>Windows 10 or 11, 64-bit</span></div>
+        <div class="file-row"><span>Installs</span><span>Nothing: unzip and run</span></div>
+        <div class="hash-label">SHA256</div>
+        <div class="hash mono">de00e199af1c17b0270a4c1defff03baa08c6109644c4612a472f0e0276be0f4</div>
+        <p class="howto">To check your download, run <code>Get-FileHash .\FileFlow_v0.9.0_Portable.zip</code> in PowerShell and compare the result with the line above. The capitals don't matter.</p>
+      </div>
+      <div class="card">
+        <h3>Get it</h3>
+        <ol class="get-steps">
+          <li>Download the FileFlow v0.9.0 ZIP.</li>
+          <li>Extract the whole <span class="mono">FileFlow</span> folder anywhere you like.</li>
+          <li>Run <span class="mono">FileFlow.exe</span> from that folder.</li>
+          <li>That's it: there's no installer. To remove it, delete the folder.</li>
+        </ol>
+        <a class="btn-accent lg" href="https://github.com/VaultSoft/FileFlow/releases/download/v0.9.0/FileFlow_v0.9.0_Portable.zip">
+          Download ZIP
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </a>
+        <p class="howto" style="margin-top:14px">Hosted on GitHub: <a href="https://github.com/VaultSoft/FileFlow/releases/tag/v0.9.0">release notes and all versions</a>. Already use VaultSoft Hub? FileFlow is listed there too.</p>
+        <p class="howto" style="margin-top:14px"><strong style="color:var(--text)">Terms:</strong> Provided as-is, without warranty. Check the preview before you apply it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOTES ═══ -->
+<section class="band alt">
+  <div class="inner" style="max-width:720px">
+    <div class="label">Good to know</div>
+    <h2 class="title">Before you run it</h2>
+
+    <div class="faq-item">
+      <h3 class="faq-q">Why does Windows warn me about it?</h3>
+      <p class="faq-a">FileFlow isn't code-signed yet. Windows SmartScreen warns about any new download that hasn't built up a reputation, and says <strong>"Windows protected your PC"</strong>. Click <strong>More info</strong>, then <strong>Run anyway</strong>. It usually only asks the first time.</p>
+      <p class="faq-a">Before you do, check the ZIP's SHA256 against the one above: if it matches, you have exactly the file we published. Some antivirus tools also flag apps packaged the way FileFlow is (PyInstaller) by mistake. If yours does, the SHA256 check is how to tell it's ours.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">Where does FileFlow keep its history?</h3>
+      <p class="faq-a">In <span class="mono">%LOCALAPPDATA%\FileFlow\fileflow.db</span> on your PC. The Settings page shows the exact path. Deleting the program folder doesn't remove it.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">What happens if a move goes wrong?</h3>
+      <p class="faq-a">If FileFlow can't confirm that a move finished properly, for example because it was interrupted, it says so on the History page and locks Apply and Undo. It shows where the file was and where it was going, so you can check. It never retries or "repairs" on its own.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">Questions or problems?</h3>
+      <p class="faq-a">Email <a href="mailto:support@vaultsoft.co.uk">support@vaultsoft.co.uk</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <a class="footer-brand" href="/">
+    <img src="/Vault_Soft_Logo.png" alt="VaultSoft logo">
+    <div class="footer-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, simple and private.</small>
+    </div>
+  </a>
+  <div class="footer-links">
+    <a href="/">All apps</a>
+    <a href="mailto:support@vaultsoft.co.uk">support@vaultsoft.co.uk</a>
+  </div>
+  <p class="footer-copy">© 2026 VaultSoft. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
