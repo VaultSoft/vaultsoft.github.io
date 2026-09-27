@@ -43,6 +43,7 @@ between the `<!-- build:... -->` markers in `index.html`; the next build overwri
 | `repo` | no | `Owner/Repo`. Used for the live version pill and download-count ordering. |
 | `icon` | no | Path to a 24x24 stroke SVG (see `icons/`). Missing = a plain square. |
 | `featured` | no | `1`, `2`, ... puts the app in the Featured row in that order. |
+| `hub` | no | VaultSoft Hub only; the site ignores it. `{"exe": "MyApp.exe"}` = the Hub installs it from `repo`'s newest release (betas included) and launches that exe. `{"mode": "link"}` = the Hub shows the card with an "Open page" button to `link`, no install. `false` = not listed in the Hub. Missing = installed like `{}`, guessing the exe. |
 
 ## How the list behaves
 
@@ -55,7 +56,14 @@ between the `<!-- build:... -->` markers in `index.html`; the next build overwri
   (`$minAppsForFilters` in `build-site.ps1`).
 - Everything works without JavaScript: all cards show, and only the filters and
   version pills need JS. No libraries or external scripts.
-- `apps.json` is public at <https://vaultsoft.co.uk/apps.json>, so other tools (e.g. VaultSoft Hub) can read it too.
+- `apps.json` is public at <https://vaultsoft.co.uk/apps.json>. VaultSoft Hub v1.1.0+ reads its
+  app list from it (and its banner from the top-level `hub_promo`: `enabled`, `text`, `url`).
+
+## apps.json can only gain fields
+
+Hubs already on people's PCs read this file and can't be updated from here. **Add new fields
+freely, but never remove or rename an existing field, or change what its values mean.** To stop
+using a field, leave it in place. The Hub's own `manifest.json` stays frozen for v1.0.x Hubs.
 
 ## Not listed here
 

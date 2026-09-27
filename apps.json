@@ -11,7 +11,10 @@
       "repo": "VaultSoft/PulseMonitor",
       "released": "2026-04-16",
       "icon": "icons/pulsemonitor.svg",
-      "featured": 2
+      "featured": 2,
+      "hub": {
+        "exe": "PulseMonitor.exe"
+      }
     },
     {
       "id": "sweptpc",
@@ -22,7 +25,10 @@
       "link": "https://vaultsoft.github.io/SweptPC/",
       "repo": "VaultSoft/SweptPC",
       "released": "2026-05-06",
-      "icon": "icons/sweptpc.svg"
+      "icon": "icons/sweptpc.svg",
+      "hub": {
+        "exe": "SweptPC.exe"
+      }
     },
     {
       "id": "batteryvault",
@@ -34,7 +40,10 @@
       "download": "https://github.com/VaultSoft/BatteryVault/releases/download/v1.0.0-beta/BatteryVault_v1.0.0_Portable.zip",
       "repo": "VaultSoft/BatteryVault",
       "released": "2026-06-04",
-      "icon": "icons/batteryvault.svg"
+      "icon": "icons/batteryvault.svg",
+      "hub": {
+        "exe": "BatteryVault.exe"
+      }
     },
     {
       "id": "wavescout",
@@ -46,7 +55,10 @@
       "download": "https://github.com/VaultSoft/WaveScout/releases/download/v1.0.0/WaveScout_v1.0.0_Portable.zip",
       "repo": "VaultSoft/WaveScout",
       "released": "2026-06-05",
-      "icon": "icons/wavescout.svg"
+      "icon": "icons/wavescout.svg",
+      "hub": {
+        "exe": "WaveScout.exe"
+      }
     },
     {
       "id": "scribevault",
@@ -59,7 +71,10 @@
       "repo": "VaultSoft/scribevault-releases",
       "released": "2026-09-27",
       "icon": "icons/scribevault.svg",
-      "featured": 1
+      "featured": 1,
+      "hub": {
+        "mode": "link"
+      }
     },
     {
       "id": "vaultsoft-hub",
@@ -71,7 +86,13 @@
       "download": "https://github.com/VaultSoft/vaultsoft-hub/releases/latest",
       "repo": "VaultSoft/vaultsoft-hub",
       "released": "2026-09-08",
-      "icon": "icons/vaultsoft-hub.svg"
+      "icon": "icons/vaultsoft-hub.svg",
+      "hub": false
     }
-  ]
+  ],
+  "hub_promo": {
+    "enabled": true,
+    "text": "Run a UK trade business? Automate your Google review requests with StarPing.",
+    "url": "https://starping.co.uk"
+  }
 }
