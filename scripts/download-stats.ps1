@@ -8,6 +8,10 @@
 # per repo and a grand total. Each run appends one row per repo to
 # stats\download-stats.csv (git-ignored) so you can see the trend week to week.
 #
+# It also rewrites downloads.json at the repo root (committed, public) with the
+# total per PUBLIC repo; scripts\build-site.ps1 uses it to order the homepage
+# cards within each category. Private repos never go into that file.
+#
 # Keep this file ASCII-only: Windows PowerShell 5.1 misreads UTF-8 without a BOM.
 
 param(
@@ -22,9 +26,13 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
 }
 
 # Public and private repos (private ones show up because we're logged in as the owner).
-$repos = gh repo list $Owner --limit 1000 --json name --jq '.[].name'
+$repoList = gh repo list $Owner --limit 1000 --json name,visibility
 if ($LASTEXITCODE -ne 0) { throw "gh repo list failed for $Owner." }
-$repos = @($repos | Where-Object { $_ } | Sort-Object)
+# Assign before wrapping: 5.1's ConvertFrom-Json emits the whole array as ONE object.
+$parsed = ($repoList -join "`n") | ConvertFrom-Json
+$repoList = @($parsed)
+$repos = @($repoList | ForEach-Object { $_.name } | Sort-Object)
+$publicRepos = @($repoList | Where-Object { $_.visibility -eq 'PUBLIC' } | ForEach-Object { $_.name })
 
 # The jq filter has no double quotes in it on purpose: Windows PowerShell 5.1
 # strips/mangles embedded double quotes when passing arguments to native exes.
@@ -81,3 +89,12 @@ $totals |
     ForEach-Object { [pscustomobject]@{ Date = $today; Repo = $_.Repo; TotalDownloads = $_.Downloads } } |
     Export-Csv -Path $csv -Append -NoTypeInformation -Encoding UTF8
 Write-Host "Appended $(@($totals).Count) rows to $csv"
+
+# downloads.json for the homepage build: public repos only, keyed "Owner/Repo".
+$json = [ordered]@{ generated = $today; downloads = [ordered]@{} }
+foreach ($t in $totals) {
+    if ($publicRepos -contains $t.Repo) { $json.downloads["$Owner/$($t.Repo)"] = $t.Downloads }
+}
+$jsonPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'downloads.json'
+[IO.File]::WriteAllText($jsonPath, ($json | ConvertTo-Json) + "`n", (New-Object Text.UTF8Encoding $false))
+Write-Host "Wrote $jsonPath - run scripts\build-site.ps1 to re-order the homepage."

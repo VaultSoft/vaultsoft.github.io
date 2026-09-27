@@ -1,0 +1,77 @@
+{
+  "categories": ["System & PC", "Network", "Privacy & Work", "Launcher"],
+  "apps": [
+    {
+      "id": "pulsemonitor",
+      "name": "PulseMonitor",
+      "description": "Real-time CPU, GPU, RAM, disk and network monitoring in a clean desktop overlay. Always visible, never in the way.",
+      "category": "System & PC",
+      "badge": "Free",
+      "link": "https://vaultsoft.github.io/PulseMonitor/",
+      "repo": "VaultSoft/PulseMonitor",
+      "released": "2026-04-16",
+      "icon": "icons/pulsemonitor.svg",
+      "featured": 2
+    },
+    {
+      "id": "sweptpc",
+      "name": "SweptPC",
+      "description": "Scan and remove junk files, browser cache, temp files and more in one click. Free and fully portable.",
+      "category": "System & PC",
+      "badge": "Free",
+      "link": "https://vaultsoft.github.io/SweptPC/",
+      "repo": "VaultSoft/SweptPC",
+      "released": "2026-05-06",
+      "icon": "icons/sweptpc.svg"
+    },
+    {
+      "id": "batteryvault",
+      "name": "BatteryVault",
+      "description": "Laptop battery health at a glance: wear, charge cycles, live charge rate and time remaining, right from the tray. Currently in beta.",
+      "category": "System & PC",
+      "badge": "Free",
+      "link": "https://github.com/VaultSoft/BatteryVault",
+      "download": "https://github.com/VaultSoft/BatteryVault/releases/download/v1.0.0-beta/BatteryVault_v1.0.0_Portable.zip",
+      "repo": "VaultSoft/BatteryVault",
+      "released": "2026-06-04",
+      "icon": "icons/batteryvault.svg"
+    },
+    {
+      "id": "wavescout",
+      "name": "WaveScout",
+      "description": "Free portable Wi-Fi analyser for Windows. Scan nearby networks, check signal strength, find the best channel and monitor your connection live.",
+      "category": "Network",
+      "badge": "Free",
+      "link": "https://vaultsoft.github.io/WaveScout/",
+      "download": "https://github.com/VaultSoft/WaveScout/releases/download/v1.0.0/WaveScout_v1.0.0_Portable.zip",
+      "repo": "VaultSoft/WaveScout",
+      "released": "2026-06-05",
+      "icon": "icons/wavescout.svg"
+    },
+    {
+      "id": "scribevault",
+      "name": "ScribeVault",
+      "description": "Turn interviews, meetings and dictation into text on your own PC. Nothing is uploaded: ScribeVault itself never opens a network connection. Free trial; £49 licence coming soon.",
+      "category": "Privacy & Work",
+      "badge": "Free trial",
+      "link": "https://vaultsoft.co.uk/scribevault/",
+      "download": "https://vaultsoft.co.uk/scribevault/#download",
+      "repo": "VaultSoft/scribevault-releases",
+      "released": "2026-09-27",
+      "icon": "icons/scribevault.svg",
+      "featured": 1
+    },
+    {
+      "id": "vaultsoft-hub",
+      "name": "VaultSoft Hub",
+      "description": "One portable launcher for VaultSoft apps. Install, update and run them from a single window.",
+      "category": "Launcher",
+      "badge": "Free",
+      "link": "https://github.com/VaultSoft/vaultsoft-hub",
+      "download": "https://github.com/VaultSoft/vaultsoft-hub/releases/latest",
+      "repo": "VaultSoft/vaultsoft-hub",
+      "released": "2026-09-08",
+      "icon": "icons/vaultsoft-hub.svg"
+    }
+  ]
+}
