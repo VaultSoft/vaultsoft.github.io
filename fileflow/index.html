@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FileFlow — Preview File Organisation Before Anything Moves</title>
-  <meta name="description" content="FileFlow sorts the files in a Windows folder into category folders. It shows every planned move first, never overwrites an existing file, and can move files back with Undo. Portable, nothing to install.">
+  <meta name="description" content="FileFlow sorts the files in a Windows folder into category folders. It shows every planned move first, never overwrites an existing file, and can move files back with Undo. Free and open source, portable, nothing to install.">
   <meta property="og:title" content="FileFlow — Preview file organisation before anything moves">
-  <meta property="og:description" content="Sort a folder into category folders, see every move first, and undo it later. Portable Windows app from VaultSoft.">
+  <meta property="og:description" content="Sort a folder into category folders, see every move first, and undo it later. Free, open-source, portable Windows app from VaultSoft.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vaultsoft.co.uk/fileflow/">
   <meta property="og:image" content="https://vaultsoft.co.uk/fileflow/img/fileflow-preview.png">
@@ -25,6 +25,9 @@
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Windows 10, Windows 11 (64-bit)",
     "softwareVersion": "0.9.0",
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
     "screenshot": "https://vaultsoft.co.uk/fileflow/img/fileflow-preview.png"
   }
   </script>
@@ -305,7 +308,7 @@
     <div class="hero-mark">
       <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21H6.5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2H13l5 5v3"/><path d="M13 3v5h5"/><path d="M13 17h8M18 14l3 3-3 3"/></svg>
     </div>
-    <div class="badge">FileFlow 0.9 · Windows</div>
+    <div class="badge">FileFlow 0.9 · Free &amp; open source</div>
     <h1>Preview your file organisation<br><em>before anything moves.</em></h1>
     <p class="hero-body">
       FileFlow sorts the files in a folder into category folders such as Documents, Images and
@@ -319,7 +322,7 @@
       </a>
       <a class="btn-ghost lg" href="#limits">What it won't do</a>
     </div>
-    <p class="hero-meta">Windows 10 and 11, 64-bit · 47 MB portable ZIP, nothing to install</p>
+    <p class="hero-meta">Windows 10 and 11, 64-bit · 47 MB portable ZIP, nothing to install · GPL-3.0</p>
   </div>
   <figure class="shot hero-shot">
     <img src="img/fileflow-preview.png" width="1266" height="793"
@@ -474,8 +477,9 @@
         <div class="file-row"><span>Size</span><span>47 MB</span></div>
         <div class="file-row"><span>Needs</span><span>Windows 10 or 11, 64-bit</span></div>
         <div class="file-row"><span>Installs</span><span>Nothing: unzip and run</span></div>
+        <div class="file-row"><span>Licence</span><span>Free and open source, GPL-3.0-only</span></div>
         <div class="hash-label">SHA256</div>
-        <div class="hash mono">de00e199af1c17b0270a4c1defff03baa08c6109644c4612a472f0e0276be0f4</div>
+        <div class="hash mono">dd063be18065cb347073919fa68ca9dcbbc47c094d40adcf214fa06dacffbc41</div>
         <p class="howto">To check your download, run <code>Get-FileHash .\FileFlow_v0.9.0_Portable.zip</code> in PowerShell and compare the result with the line above. The capitals don't matter.</p>
       </div>
       <div class="card">
@@ -490,8 +494,8 @@
           Download ZIP
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
         </a>
-        <p class="howto" style="margin-top:14px">Hosted on GitHub: <a href="https://github.com/VaultSoft/FileFlow/releases/tag/v0.9.0">release notes and all versions</a>. Already use VaultSoft Hub? FileFlow is listed there too.</p>
-        <p class="howto" style="margin-top:14px"><strong style="color:var(--text)">Terms:</strong> Provided as-is, without warranty. Check the preview before you apply it.</p>
+        <p class="howto" style="margin-top:14px">Hosted on GitHub: <a href="https://github.com/VaultSoft/FileFlow/releases/tag/v0.9.0">release notes and all versions</a>, and the <a href="https://github.com/VaultSoft/FileFlow">source code</a>. Already use VaultSoft Hub? FileFlow is listed there too.</p>
+        <p class="howto" style="margin-top:14px"><strong style="color:var(--text)">Licence:</strong> FileFlow is free software under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3.0</a>. It comes with no warranty. Check the preview before you apply it.</p>
       </div>
     </div>
   </div>
@@ -512,6 +516,11 @@
     <div class="faq-item">
       <h3 class="faq-q">Where does FileFlow keep its history?</h3>
       <p class="faq-a">In <span class="mono">%LOCALAPPDATA%\FileFlow\fileflow.db</span> on your PC. The Settings page shows the exact path. Deleting the program folder doesn't remove it.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">Is it really free?</h3>
+      <p class="faq-a">Yes. FileFlow is free and open source under the GNU General Public License v3.0: no price, no trial, no licence key. The <a href="https://github.com/VaultSoft/FileFlow">source code is on GitHub</a>. The ZIP includes the licence and the notices for the open-source parts it is built on (Qt, PyQt6 and Python) in <span class="mono">LICENSE</span>, <span class="mono">THIRD_PARTY_NOTICES.md</span> and the <span class="mono">LICENSES</span> folder.</p>
     </div>
 
     <div class="faq-item">
