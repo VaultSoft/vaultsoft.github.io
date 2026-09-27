@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScribeVault — Offline Transcription for Windows</title>
+  <meta name="description" content="ScribeVault turns recordings into text on your own Windows PC. No uploads, no accounts: ScribeVault itself never opens a network connection. Free trial: the first 10 minutes of every recording.">
+  <meta property="og:title" content="ScribeVault — Offline Transcription for Windows">
+  <meta property="og:description" content="Recordings into text on your own PC. Nothing is uploaded. Free trial available.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://vaultsoft.co.uk/scribevault/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <!-- No web fonts, scripts or trackers: this page makes no requests to anyone else.
+       Inter is used if it's installed; otherwise the system font. -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ScribeVault",
+    "description": "Offline transcription for Windows. Recordings are turned into text on your own PC, and ScribeVault itself never opens a network connection.",
+    "url": "https://vaultsoft.co.uk/scribevault/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+    "softwareVersion": "1.0",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP", "description": "Free trial: the first 10 minutes of each recording" }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #07091A;
+      --bg-card:  #0C1428;
+      --bg-card2: #101C38;
+      --border:   rgba(255,255,255,0.06);
+      --border-hi:rgba(255,255,255,0.13);
+      --accent:   #2AFFD5;
+      --accent-d: rgba(42,255,213,0.09);
+      --accent-g: rgba(42,255,213,0.20);
+      --amber:    #FFC857;
+      --amber-d:  rgba(255,200,87,0.08);
+      --text:     #DDE8FF;
+      --muted:    #8BA0B8;
+      --dim:      #4A6580;
+      --r:        12px;
+      --r-lg:     18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    a { color: var(--accent); }
+    code, .mono { font-family: 'Cascadia Mono', Consolas, 'Courier New', monospace; }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 64px;
+      background: rgba(7,9,26,0.88);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 7px; }
+    .nav-brand-copy { display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-brand-copy strong { font-size: 0.95rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .nav-brand-copy small { font-size: 0.67rem; color: var(--muted); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border);
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); }
+
+    .btn-accent {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 700;
+      color: #07091A; background: var(--accent);
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 0 22px var(--accent-g);
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-accent.lg { padding: 13px 26px; font-size: 1rem; border-radius: 10px; }
+    .btn-ghost.lg { padding: 12px 22px; font-size: 1rem; border-radius: 10px; }
+
+    /* ─── HERO ─── */
+    #hero { padding: 150px 6% 70px; text-align: center; position: relative; overflow: hidden; }
+    .hero-glow {
+      position: absolute; pointer-events: none;
+      width: 900px; height: 600px; top: 0; left: 50%; transform: translateX(-50%);
+      background: radial-gradient(ellipse at top, rgba(42,255,213,0.07) 0%, transparent 65%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42,255,213,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42,255,213,0.028) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 100%);
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 13px; margin-bottom: 26px;
+      background: var(--accent-d); border: 1px solid rgba(42,255,213,0.22); border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.06;
+      letter-spacing: -0.04em; color: #fff; margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-body {
+      font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+      max-width: 600px; margin: 0 auto 36px;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+    .hero-meta { font-size: 0.8rem; color: var(--dim); }
+
+    /* ─── SECTIONS ─── */
+    section.band { padding: 70px 6%; }
+    section.band.alt { background: linear-gradient(180deg, #060916 0%, var(--bg) 100%); }
+    .inner { max-width: 900px; margin: 0 auto; }
+    .label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    h2.title {
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em;
+      color: #fff; line-height: 1.15; margin-bottom: 18px;
+    }
+    .lead { font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 720px; margin-bottom: 30px; }
+    .lead strong, .card p strong, .faq-a strong { color: var(--text); font-weight: 600; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 26px 24px;
+    }
+    .card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+    .card-icon {
+      width: 42px; height: 42px; border-radius: 11px; margin-bottom: 16px;
+      background: var(--accent-d); border: 1px solid rgba(42,255,213,0.14);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-icon svg { width: 21px; height: 21px; }
+
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .tag {
+      font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 100px;
+      background: rgba(42,255,213,0.08); border: 1px solid rgba(42,255,213,0.14); color: var(--accent);
+    }
+
+    /* The promise */
+    .promise {
+      background: var(--bg-card); border: 1px solid rgba(42,255,213,0.22);
+      border-radius: var(--r-lg); padding: 34px 32px;
+      box-shadow: 0 0 40px rgba(42,255,213,0.05);
+    }
+    .promise h2.title { margin-bottom: 12px; }
+    .promise ul { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+    .promise li { color: var(--muted); font-size: 0.95rem; padding-left: 26px; position: relative; }
+    .promise li::before {
+      content: ""; position: absolute; left: 0; top: 0.45em; width: 12px; height: 7px;
+      border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg);
+    }
+
+    /* Limitations: amber, deliberately */
+    .limits .card { border-color: rgba(255,200,87,0.16); }
+    .limits .card h3 { color: var(--amber); }
+
+    /* Trial and licence */
+    .trial-list { list-style: none; display: grid; gap: 10px; }
+    .trial-list li { color: var(--muted); font-size: 0.93rem; padding-left: 18px; position: relative; }
+    .trial-list li::before { content: "•"; position: absolute; left: 2px; color: var(--accent); }
+    .soon {
+      display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--amber); background: var(--amber-d); border: 1px solid rgba(255,200,87,0.25);
+      border-radius: 100px; padding: 3px 10px; margin-bottom: 12px;
+    }
+    .price { font-size: 2.2rem; font-weight: 900; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 12px; }
+
+    /* Download */
+    .download { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: start; }
+    .file-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .file-row:last-of-type { border-bottom: none; }
+    .file-row span:first-child { color: var(--dim); }
+    .file-row span:last-child { color: var(--text); text-align: right; overflow-wrap: anywhere; }
+    .hash {
+      margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+      background: #050714; border: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--accent); word-break: break-all; line-height: 1.55;
+      user-select: all;
+    }
+    .hash-label { font-size: 0.72rem; color: var(--dim); margin-top: 18px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+    .howto { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+    .howto code { font-size: 0.8rem; color: var(--text); background: #050714; border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; }
+
+    /* FAQ-style notes */
+    .faq-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .faq-a { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .faq-a + .faq-a { margin-top: 10px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border); padding: 30px 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-top: auto;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .footer-brand img { width: 28px; height: 28px; border-radius: 6px; opacity: 0.75; }
+    .footer-brand-copy { display: flex; flex-direction: column; line-height: 1.25; }
+    .footer-brand-copy strong { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .footer-brand-copy small { font-size: 0.7rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.18s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.73rem; color: var(--dim); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 760px) {
+      nav { padding: 0 4%; }
+      .nav-right .btn-ghost { display: none; }
+      #hero { padding: 120px 4% 50px; }
+      section.band { padding: 50px 4%; }
+      .grid, .grid.three, .download { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a class="nav-brand" href="/">
+    <img src="/Vault_Soft_Logo.png" alt="VaultSoft">
+    <div class="nav-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, simple and private</small>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a class="btn-ghost" href="/">All apps</a>
+    <a class="btn-accent" href="#download">Download trial</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="badge">ScribeVault 1.0 · Free trial</div>
+    <h1>Transcribe recordings<br><em>without uploading them.</em></h1>
+    <p class="hero-body">
+      ScribeVault turns interviews, meetings and dictation into text you can check, correct and
+      export, entirely on your own Windows computer. Nothing is uploaded: ScribeVault itself
+      never opens a network connection.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-accent lg" href="#download">
+        Download the free trial
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="btn-ghost lg" href="#limits">What it can't do</a>
+    </div>
+    <p class="hero-meta">Windows 10 and 11, 64-bit · English recordings · 540 MB portable ZIP, nothing to install</p>
+  </div>
+</section>
+
+<!-- ═══ WHO IT'S FOR ═══ -->
+<section class="band">
+  <div class="inner">
+    <div class="label">Who it's for</div>
+    <h2 class="title">For recordings that shouldn't go to someone else's server.</h2>
+    <p class="lead">
+      Cloud transcription services work by uploading your audio. That's a problem when the
+      recording is a witness interview, a disciplinary hearing, a client call or a source who
+      was promised confidentiality. ScribeVault is for people who need the text but
+      <strong>can't, or would rather not, send the recording anywhere</strong>: solicitors and
+      paralegals, investigators, HR teams, journalists and researchers.
+    </p>
+    <div class="grid three">
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        </div>
+        <h3>Runs on your PC</h3>
+        <p>The open-source Whisper speech model, running locally via whisper.cpp, does the recognition on your own processor. No account, no sign-in, no internet needed.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        </div>
+        <h3>Flags lines to check</h3>
+        <p>Lines spoken quietly, lines the engine was unsure of and repeated lines are marked, so you know where to listen first.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+        </div>
+        <h3>Check, correct, export</h3>
+        <p>Play the audio from any line, fix the text, name the speakers, then export to Word, PDF, plain text or SRT subtitles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PROMISE ═══ -->
+<section class="band alt">
+  <div class="inner">
+    <div class="promise">
+      <div class="label">The promise</div>
+      <h2 class="title">ScribeVault stays off the network.</h2>
+      <p class="lead" style="margin-bottom:0">
+        ScribeVault itself never opens a network connection. That isn't a setting you have to
+        find; it's how it's built, and it's tested. The first time you run it, Windows may check the download with Microsoft SmartScreen — that's Windows, not ScribeVault.
+      </p>
+      <ul>
+        <li>No uploads, no accounts, no telemetry, no crash reports.</li>
+        <li>No update checks. When a new version is out, it's listed on this page.</li>
+        <li>Licence keys are checked on your PC, offline.</li>
+        <li>Recordings and transcripts stay on your computer.</li>
+        <li>ScribeVault's own test suite runs a full transcription, export and playback under a
+            network monitor, both as a trial and licensed, and fails on any connection.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LIMITATIONS ═══ -->
+<section class="band limits" id="limits">
+  <div class="inner">
+    <div class="label">Honest limitations</div>
+    <h2 class="title">What it won't do for you.</h2>
+    <p class="lead">A transcript is a draft to check against the recording: not a verbatim record, and not evidence on its own. Please read these before relying on one.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Unmarked lines can still be wrong</h3>
+        <p>Flags catch the most likely mistakes: quiet speech, low-confidence lines and repeats. But a line with no flag can still be wrong, and sometimes confidently so. <strong>Two people talking over each other</strong> can come out as one clean, plausible sentence. Check anything that matters against the audio.</p>
+      </div>
+      <div class="card">
+        <h3>Slower on older PCs</h3>
+        <p>On our test PC, a recent 12-core desktop, a 3½-minute recording takes about 30 seconds; a typical laptop takes longer. On a PC from before about 2013, the same recording took over 3 minutes, and very old machines will be slower still. On old hardware, expect it to take longer than the recording itself.</p>
+      </div>
+      <div class="card">
+        <h3>English only</h3>
+        <p>ScribeVault uses an English speech model. Recordings in other languages won't transcribe properly.</p>
+      </div>
+      <div class="card">
+        <h3>You name the speakers</h3>
+        <p>It doesn't work out who is talking. You assign each line to a speaker and rename them, and every line with that label follows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRIAL AND LICENCE ═══ -->
+<section class="band alt" id="trial">
+  <div class="inner">
+    <div class="label">Trial and licence</div>
+    <h2 class="title">Try it free. Buy it once.</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>The free trial</h3>
+        <ul class="trial-list">
+          <li><strong style="color:var(--text)">The first 10 minutes of each recording</strong> are transcribed. Shorter recordings are transcribed in full.</li>
+          <li>Everything the trial makes is <strong style="color:var(--text)">marked as trial output</strong>, on screen and in every export, and the marks can't be turned off.</li>
+          <li>No time limit, no sign-up, no email address needed.</li>
+          <li>Everything else works as in the full version: flags, playback, editing and all four export formats.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="soon">Coming soon</span>
+        <div class="price">£49</div>
+        <p>A one-off licence removes the 10-minute limit and the trial marks. No subscription, and it works offline for good. It isn't on sale yet.</p>
+        <p style="margin-top:12px">To hear when it is, watch the <a href="https://github.com/VaultSoft/scribevault-releases">ScribeVault releases on GitHub</a>: Watch, then Custom, then Releases.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DOWNLOAD ═══ -->
+<section class="band" id="download">
+  <div class="inner">
+    <div class="label">Download</div>
+    <h2 class="title">ScribeVault 1.0, free trial</h2>
+    <div class="download">
+      <div class="card">
+        <div class="file-row"><span>File</span><span class="mono">ScribeVault-v1.0.0-trial-win64.zip</span></div>
+        <div class="file-row"><span>Size</span><span>540 MB</span></div>
+        <div class="file-row"><span>Needs</span><span>Windows 10 or 11, 64-bit</span></div>
+        <div class="file-row"><span>Installs</span><span>Nothing: unzip and run</span></div>
+        <div class="hash-label">SHA256</div>
+        <div class="hash mono">2029806314ee21fe2ace72da81e5d360c2be97c6f0fdb234f038fc67dcf00363</div>
+        <p class="howto">To check your download, run <code>Get-FileHash .\ScribeVault-v1.0.0-trial-win64.zip</code> in PowerShell and compare the result with the line above. The capitals don't matter.</p>
+      </div>
+      <div class="card">
+        <h3>Get it</h3>
+        <p style="margin-bottom:18px">Unzip the whole folder anywhere (Documents is fine), then run <span class="mono">ScribeVault.exe</span>. Keep the folders inside it together. To remove it, delete the folder.</p>
+        <a class="btn-accent lg" href="https://github.com/VaultSoft/scribevault-releases/releases/download/v1.0.0-trial/ScribeVault-v1.0.0-trial-win64.zip">
+          Download ZIP
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </a>
+        <p class="howto" style="margin-top:14px">Hosted on GitHub: <a href="https://github.com/VaultSoft/scribevault-releases/releases/tag/v1.0.0-trial">release notes and all versions</a>.</p>
+        <p class="howto" style="margin-top:14px"><strong style="color:var(--text)">Terms:</strong> Provided as-is, without warranty. You are responsible for checking transcripts against the recording before relying on them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOTES ═══ -->
+<section class="band alt">
+  <div class="inner" style="max-width:720px">
+    <div class="label">Good to know</div>
+    <h2 class="title">Before you run it</h2>
+
+    <div class="faq-item">
+      <h3 class="faq-q">Why does Windows warn me about it?</h3>
+      <p class="faq-a">ScribeVault isn't code-signed yet. Windows SmartScreen warns about any new download that hasn't built up a reputation, and says <strong>"Windows protected your PC"</strong>. Click <strong>More info</strong>, then <strong>Run anyway</strong>. It usually only asks the first time.</p>
+      <p class="faq-a">Before you do, check the ZIP's SHA256 against the one above: if it matches, you have exactly the file we published. Some antivirus tools also flag apps packaged the way ScribeVault is (PyInstaller) by mistake. If yours does, the SHA256 check is how to tell it's ours.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">What's in the download?</h3>
+      <p class="faq-a">The app, the whisper.cpp speech engine and its English model, and ffmpeg to read your recordings, all inside one folder. ScribeVault includes open-source software under its own licences, including Qt, PySide6 and FFmpeg under the LGPL. The notices are in the <span class="mono">LICENSES</span> folder, and that folder's README explains how to replace the LGPL libraries with your own builds.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">What about my data?</h3>
+      <p class="faq-a">ScribeVault itself sends nothing, so we never see your recordings, transcripts or anything about how you use it. This page loads nothing from anyone else: no analytics, no fonts, no trackers. If you email us, we use your address only to reply. The data controller is Joshua Wall, trading as VaultSoft. To ask about or delete your data, email <a href="mailto:support@vaultsoft.co.uk">support@vaultsoft.co.uk</a>.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-q">How do I get updates?</h3>
+      <p class="faq-a">ScribeVault never checks for updates itself. New versions are listed on this page. Download the new ZIP and replace the old folder. Your transcripts are saved beside your recordings, not in the program folder, so they aren't touched.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <a class="footer-brand" href="/">
+    <img src="/Vault_Soft_Logo.png" alt="VaultSoft logo">
+    <div class="footer-brand-copy">
+      <strong>VaultSoft</strong>
+      <small>Useful software, simple and private.</small>
+    </div>
+  </a>
+  <div class="footer-links">
+    <a href="/">All apps</a>
+    <a href="mailto:support@vaultsoft.co.uk">support@vaultsoft.co.uk</a>
+  </div>
+  <p class="footer-copy">© 2026 VaultSoft. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
