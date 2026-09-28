@@ -311,9 +311,26 @@
       font-size: 1.5rem; font-weight: 800; color: #fff;
       letter-spacing: -0.03em; margin-bottom: 10px;
     }
-    .app-card.is-featured { border-color: rgba(42,255,213,0.20); background: var(--bg-card2); }
+    /* Spotlight: one full-width card band between the hero and the grids. */
+    .spotlight { padding: 0 6%; }
+    .spotlight-inner { max-width: 900px; margin: 0 auto; }
+    .spotlight-card {
+      flex-direction: row; align-items: flex-start; gap: 28px;
+      border-color: rgba(42,255,213,0.20); background: var(--bg-card2);
+    }
+    .spotlight-card:hover { transform: none; }
+    .spotlight-card .app-card-icon { width: 64px; height: 64px; flex-shrink: 0; margin-bottom: 0; }
+    .spotlight-card .app-card-icon svg { width: 32px; height: 32px; }
+    .spotlight-body { flex: 1; min-width: 0; }
+    .spotlight-card h2 {
+      font-size: 1.75rem; font-weight: 800; color: #fff;
+      letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .spotlight-card p { font-size: 0.95rem; color: var(--muted); line-height: 1.65; margin-bottom: 8px; }
+    .spotlight-card .spotlight-line { color: var(--text); margin-bottom: 20px; }
+    .spotlight-card .app-tags { margin-bottom: 24px; }
 
-    /* Groups: Featured row, then one block per category. */
+    /* Groups: one block per category. */
     .app-group + .app-group { margin-top: 56px; }
     .group-title {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
@@ -430,6 +447,8 @@
       #hero { padding: 130px 4% 60px; }
       #apps { padding: 60px 4% 80px; }
       .apps-grid { grid-template-columns: 1fr; }
+      .spotlight { padding: 0 4%; }
+      .spotlight-card { flex-direction: column; gap: 20px; padding: 32px 24px; }
     }
   </style>
   <meta name="google-site-verification" content="oIq8zumOk-iTSBzpkufmUh6XNeCO5u4swH96b8GTHho" />
@@ -464,13 +483,46 @@
   <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-inner">
     <img src="Vault_Soft_Logo.png" alt="VaultSoft" style="width:110px;height:110px;border-radius:50%;margin-bottom:28px;display:block;margin-left:auto;margin-right:auto;">
-    <div class="badge">Free &amp; Open Source</div>
+    <div class="badge">Portable Windows Tools</div>
     <h1>Free Portable Windows Utilities —<br><em>no install, no nonsense.</em></h1>
     <p class="hero-body">
-      Portable, bloat-free utilities from VaultSoft. No installers, no subscriptions, no nonsense.
+      Small, portable utilities for Windows 10 and 11. Download, run, done. No installers, no subscriptions.
     </p>
   </div>
 </section>
+
+<!-- ═══ SPOTLIGHT ═══ -->
+<!-- build:spotlight (generated from apps.json by scripts/build-site.ps1 - set "spotlight": true there) -->
+<section class="spotlight" id="vaultsoft-hub" aria-label="VaultSoft Hub">
+  <div class="spotlight-inner">
+    <div class="app-card spotlight-card" data-app="vaultsoft-hub" data-released="2026-09-08">
+      <div class="app-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/>
+          <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/>
+          <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/>
+          <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>
+        </svg>
+      </div>
+      <div class="spotlight-body">
+        <div class="app-label">Launcher</div>
+        <h2>VaultSoft Hub</h2>
+        <p>One portable launcher for VaultSoft apps. Install, update and run them from a single window.</p>
+        <p class="spotlight-line">Installs, updates and launches every VaultSoft app from one window.</p>
+        <div class="app-tags">
+          <span class="tag tag-new">New</span>
+          <span class="tag">Free</span>
+          <span class="tag tag-version" data-repo="VaultSoft/vaultsoft-hub"></span>
+        </div>
+        <div class="app-actions">
+          <a class="btn-view" href="https://github.com/VaultSoft/vaultsoft-hub/releases/latest">Download <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
+          <a class="btn-ghost-sm" href="https://github.com/VaultSoft/vaultsoft-hub">View on GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /build:spotlight -->
 
 <!-- ═══ APPS ═══ -->
 <section id="apps">
@@ -481,52 +533,6 @@
       <button type="button" class="filter" data-filter="system-pc" aria-pressed="false">System &amp; PC</button>
       <button type="button" class="filter" data-filter="network" aria-pressed="false">Network</button>
       <button type="button" class="filter" data-filter="privacy-work" aria-pressed="false">Privacy &amp; Work</button>
-      <button type="button" class="filter" data-filter="launcher" aria-pressed="false">Launcher</button>
-    </div>
-
-    <div class="app-group" data-group="featured">
-      <h2 class="group-title">Featured</h2>
-      <div class="apps-grid">
-        <div class="app-card is-featured" data-app="scribevault" data-released="2026-09-27">
-          <div class="app-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="9" y="2.5" width="6" height="11" rx="3"/>
-              <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/>
-            </svg>
-          </div>
-          <div class="app-label">Privacy &amp; Work</div>
-          <h3>ScribeVault</h3>
-          <p>Turn interviews, meetings and dictation into text on your own PC. Nothing is uploaded: ScribeVault itself never opens a network connection. Free trial; &#163;49 licence coming soon.</p>
-          <div class="app-tags">
-            <span class="tag tag-new">New</span>
-            <span class="tag tag-trial">Free trial</span>
-            <span class="tag tag-version" data-repo="VaultSoft/scribevault-releases"></span>
-          </div>
-          <div class="app-actions">
-            <a class="btn-view" href="https://vaultsoft.co.uk/scribevault/">View App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <a class="btn-ghost-sm" href="https://vaultsoft.co.uk/scribevault/#download">Download trial <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
-          </div>
-        </div>
-
-        <div class="app-card is-featured" data-app="pulsemonitor" data-released="2026-04-16">
-          <div class="app-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-          </div>
-          <div class="app-label">System &amp; PC</div>
-          <h3>PulseMonitor</h3>
-          <p>Real-time CPU, GPU, RAM, disk and network monitoring in a clean desktop overlay. Always visible, never in the way.</p>
-          <div class="app-tags">
-            <span class="tag tag-new" hidden>New</span>
-            <span class="tag">Free</span>
-            <span class="tag tag-version" data-repo="VaultSoft/PulseMonitor"></span>
-          </div>
-          <div class="app-actions">
-            <a class="btn-view" href="https://vaultsoft.github.io/PulseMonitor/">View App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="app-group" data-category="system-pc">
@@ -669,34 +675,6 @@
         </div>
       </div>
     </div>
-
-    <div class="app-group" data-category="launcher">
-      <h2 class="group-title">Launcher</h2>
-      <div class="apps-grid">
-        <div class="app-card" data-app="vaultsoft-hub" data-released="2026-09-08">
-          <div class="app-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/>
-              <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/>
-              <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/>
-              <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>
-            </svg>
-          </div>
-          <div class="app-label">Launcher</div>
-          <h3>VaultSoft Hub</h3>
-          <p>One portable launcher for VaultSoft apps. Install, update and run them from a single window.</p>
-          <div class="app-tags">
-            <span class="tag tag-new">New</span>
-            <span class="tag">Free</span>
-            <span class="tag tag-version" data-repo="VaultSoft/vaultsoft-hub"></span>
-          </div>
-          <div class="app-actions">
-            <a class="btn-view" href="https://github.com/VaultSoft/vaultsoft-hub">View on GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <a class="btn-ghost-sm" href="https://github.com/VaultSoft/vaultsoft-hub/releases/latest">Download <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></a>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- /build:apps -->
   </div>
 </section>
@@ -783,8 +761,7 @@
           b.setAttribute('aria-pressed', String(b === btn));
         });
         Array.prototype.forEach.call(document.querySelectorAll('.app-group'), function (g) {
-          var cat = g.getAttribute('data-category');
-          g.hidden = want !== 'all' && cat !== want;   // Featured has no category: shown under All only
+          g.hidden = want !== 'all' && g.getAttribute('data-category') !== want;
         });
       });
     }

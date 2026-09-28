@@ -3,11 +3,14 @@
 #   powershell -ExecutionPolicy Bypass -File scripts\build-site.ps1    # Windows PowerShell 5.1
 #   pwsh -File scripts\build-site.ps1                                  # PowerShell 7
 #
-# Rewrites three generated regions and leaves everything else alone:
-#   index.html   between <!-- build:apps --> and <!-- /build:apps -->   (Featured row, filter bar, category grids)
+# Rewrites four generated regions and leaves everything else alone:
+#   index.html   between <!-- build:spotlight --> and <!-- /build:spotlight --> (full-width band per spotlight app)
+#   index.html   between <!-- build:apps --> and <!-- /build:apps -->   (filter bar, category grids)
 #   index.html   between <!-- build:jsonld --> and <!-- /build:jsonld --> (Organization JSON-LD)
 #   sitemap.xml  (whole file: homepage + every app link that is not on github.com)
 #
+# Apps with "spotlight": true get the band under the hero instead of a card:
+# they are left out of the category grids and the filter bar.
 # Card order within a category comes from downloads.json (written by
 # scripts\download-stats.ps1); apps missing from it count as 0 downloads.
 # Running it twice in a row produces no changes.
@@ -63,30 +66,38 @@ $fallbackIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-wi
 $arrowSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
 $downSvg  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>'
 
+$spotlightLine = 'Installs, updates and launches every VaultSoft app from one window.'
+
 # ---- card markup -----------------------------------------------------------
 
-function Get-Card($app, [bool]$featured) {
-    $ind = '        '
+function Get-Icon($app, [string]$ind) {
     $icon = $fallbackIcon
     if ($app.icon) {
         $iconPath = Join-Path $root $app.icon
         if (Test-Path $iconPath) { $icon = (Read-Utf8 $iconPath).Trim() }
         else { Write-Warning "$($app.name): icon '$($app.icon)' not found - using the fallback." }
     }
-    $icon = ($icon -split "\r?\n" | ForEach-Object { "$ind    $_" }) -join "`n"
+    ($icon -split "\r?\n" | ForEach-Object { "$ind$_" }) -join "`n"
+}
 
+function Get-NewAttr($app) {
     $released = [datetime]::ParseExact($app.released, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
     $age = ($todayUtc - $released).TotalDays
-    $newAttr = if ($age -ge 0 -and $age -le $newDays) { '' } else { ' hidden' }
+    if ($age -ge 0 -and $age -le $newDays) { '' } else { ' hidden' }
+}
+
+function Get-Card($app) {
+    $ind = '        '
+    $icon = Get-Icon $app "$ind    "
+    $newAttr = Get-NewAttr $app
 
     $badgeClass = if ($app.badge -match 'trial') { 'tag tag-trial' } else { 'tag' }
     $isGitHub = $app.link -match '^https://github\.com/'
     $viewLabel = if ($isGitHub) { 'View on GitHub' } else { 'View App' }
     $dlLabel = if ($app.badge -match 'trial') { 'Download trial' } else { 'Download' }
-    $cls = if ($featured) { 'app-card is-featured' } else { 'app-card' }
 
     $lines = @(
-        "$ind<div class=`"$cls`" data-app=`"$(Enc $app.id)`" data-released=`"$(Enc $app.released)`">"
+        "$ind<div class=`"app-card`" data-app=`"$(Enc $app.id)`" data-released=`"$(Enc $app.released)`">"
         "$ind  <div class=`"app-card-icon`">"
         $icon
         "$ind  </div>"
@@ -107,11 +118,10 @@ function Get-Card($app, [bool]$featured) {
     $lines -join "`n"
 }
 
-function Get-Group([string]$title, [string]$categorySlug, $groupApps, [bool]$featured) {
-    $attr = if ($categorySlug) { " data-category=`"$categorySlug`"" } else { ' data-group="featured"' }
-    $cards = ($groupApps | ForEach-Object { Get-Card $_ $featured }) -join "`n`n"
+function Get-Group([string]$title, [string]$categorySlug, $groupApps) {
+    $cards = ($groupApps | ForEach-Object { Get-Card $_ }) -join "`n`n"
     @(
-        "    <div class=`"app-group`"$attr>"
+        "    <div class=`"app-group`" data-category=`"$categorySlug`">"
         "      <h2 class=`"group-title`">$(Enc $title)</h2>"
         "      <div class=`"apps-grid`">"
         $cards
@@ -120,26 +130,61 @@ function Get-Group([string]$title, [string]$categorySlug, $groupApps, [bool]$fea
     ) -join "`n"
 }
 
+# Full-width band for a spotlight app: Download is the primary action.
+function Get-Spotlight($app) {
+    $ind = '    '
+    $viewLabel = if ($app.link -match '^https://github\.com/') { 'View on GitHub' } else { 'View App' }
+    $dlHref = if ($app.download) { $app.download } else { $app.link }
+    $lines = @(
+        "<section class=`"spotlight`" id=`"$(Enc $app.id)`" aria-label=`"$(Enc $app.name)`">"
+        '  <div class="spotlight-inner">'
+        "$ind<div class=`"app-card spotlight-card`" data-app=`"$(Enc $app.id)`" data-released=`"$(Enc $app.released)`">"
+        "$ind  <div class=`"app-card-icon`">"
+        (Get-Icon $app "$ind    ")
+        "$ind  </div>"
+        "$ind  <div class=`"spotlight-body`">"
+        "$ind    <div class=`"app-label`">$(Enc $app.category)</div>"
+        "$ind    <h2>$(Enc $app.name)</h2>"
+        "$ind    <p>$(Enc $app.description)</p>"
+        "$ind    <p class=`"spotlight-line`">$(Enc $spotlightLine)</p>"
+        "$ind    <div class=`"app-tags`">"
+        "$ind      <span class=`"tag tag-new`"$(Get-NewAttr $app)>New</span>"
+        "$ind      <span class=`"tag`">$(Enc $app.badge)</span>"
+    )
+    if ($app.repo) { $lines += "$ind      <span class=`"tag tag-version`" data-repo=`"$(Enc $app.repo)`"></span>" }
+    $lines += "$ind    </div>"
+    $lines += "$ind    <div class=`"app-actions`">"
+    $lines += "$ind      <a class=`"btn-view`" href=`"$(Enc $dlHref)`">Download $downSvg</a>"
+    $lines += "$ind      <a class=`"btn-ghost-sm`" href=`"$(Enc $app.link)`">$viewLabel $arrowSvg</a>"
+    $lines += "$ind    </div>"
+    $lines += "$ind  </div>"
+    $lines += "$ind</div>"
+    $lines += '  </div>'
+    $lines += '</section>'
+    $lines -join "`n"
+}
+
 # ---- build the regions -----------------------------------------------------
+
+$spotlightApps = @($apps | Where-Object { $_.spotlight } | Sort-Object name)
+$gridApps = @($apps | Where-Object { -not $_.spotlight })
+$spotlightHtml = ($spotlightApps | ForEach-Object { Get-Spotlight $_ }) -join "`n`n"
 
 $parts = New-Object System.Collections.Generic.List[string]
 
 $filterLines = @("    <div class=`"filters`" id=`"app-filters`" data-min-apps=`"$minAppsForFilters`" role=`"group`" aria-label=`"Filter apps by category`" hidden>")
 $filterLines += '      <button type="button" class="filter" data-filter="all" aria-pressed="true">All</button>'
 foreach ($c in $categories) {
-    if (@($apps | Where-Object { $_.category -eq $c }).Count -eq 0) { continue }
+    if (@($gridApps | Where-Object { $_.category -eq $c }).Count -eq 0) { continue }
     $filterLines += "      <button type=`"button`" class=`"filter`" data-filter=`"$(Slug $c)`" aria-pressed=`"false`">$(Enc $c)</button>"
 }
 $filterLines += '    </div>'
 $parts.Add($filterLines -join "`n")
 
-$featuredApps = @($apps | Where-Object { $_.featured } | Sort-Object { [int]$_.featured }, name)
-if ($featuredApps.Count) { $parts.Add((Get-Group 'Featured' '' $featuredApps $true)) }
-
 foreach ($c in $categories) {
-    $inCat = @($apps | Where-Object { $_.category -eq $c } |
+    $inCat = @($gridApps | Where-Object { $_.category -eq $c } |
         Sort-Object @{ Expression = { Get-Downloads $_ }; Descending = $true }, @{ Expression = { $_.name }; Descending = $false })
-    if ($inCat.Count) { $parts.Add((Get-Group $c (Slug $c) $inCat $false)) }
+    if ($inCat.Count) { $parts.Add((Get-Group $c (Slug $c) $inCat)) }
 }
 $appsHtml = $parts -join "`n`n"
 
@@ -193,6 +238,7 @@ $raw = Read-Utf8 $indexPath
 $crlf = $raw.Contains("`r`n")
 $html = $raw.Replace("`r`n", "`n")
 $html = Set-Region $html 'jsonld' $jsonLd
+$html = Set-Region $html 'spotlight' $spotlightHtml
 $html = Set-Region $html 'apps' $appsHtml
 if ($crlf) { $html = $html.Replace("`n", "`r`n") }
 if ($html -ne $raw) { [IO.File]::WriteAllText($indexPath, $html, $utf8); Write-Host 'index.html updated.' }
@@ -214,4 +260,4 @@ $old = if (Test-Path $smPath) { Read-Utf8 $smPath } else { '' }
 if ($smText -ne $old) { [IO.File]::WriteAllText($smPath, $smText, $utf8); Write-Host 'sitemap.xml updated.' }
 else { Write-Host 'sitemap.xml already up to date.' }
 
-Write-Host ("{0} apps in {1} categories, {2} featured." -f $apps.Count, $categories.Count, $featuredApps.Count)
+Write-Host ("{0} apps in {1} categories, {2} in the spotlight." -f $apps.Count, $categories.Count, $spotlightApps.Count)
