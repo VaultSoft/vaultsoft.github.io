@@ -66,8 +66,6 @@ $fallbackIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#2AFFD5" stroke-wi
 $arrowSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
 $downSvg  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>'
 
-$spotlightLine = 'Installs, updates and launches every VaultSoft app from one window.'
-
 # ---- card markup -----------------------------------------------------------
 
 function Get-Icon($app, [string]$ind) {
@@ -146,7 +144,6 @@ function Get-Spotlight($app) {
         "$ind    <div class=`"app-label`">$(Enc $app.category)</div>"
         "$ind    <h2>$(Enc $app.name)</h2>"
         "$ind    <p>$(Enc $app.description)</p>"
-        "$ind    <p class=`"spotlight-line`">$(Enc $spotlightLine)</p>"
         "$ind    <div class=`"app-tags`">"
         "$ind      <span class=`"tag tag-new`"$(Get-NewAttr $app)>New</span>"
         "$ind      <span class=`"tag`">$(Enc $app.badge)</span>"
