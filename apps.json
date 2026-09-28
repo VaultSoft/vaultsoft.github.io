@@ -105,7 +105,7 @@
     }
   ],
   "hub_promo": {
-    "enabled": true,
+    "enabled": false,
     "text": "Run a UK trade business? Automate your Google review requests with StarPing.",
     "url": "https://starping.co.uk"
   }
