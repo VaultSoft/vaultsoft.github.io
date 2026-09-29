@@ -6,7 +6,8 @@
 #
 # Prints every release asset with its download count (sorted by repo), a total
 # per repo and a grand total. Each run appends one row per repo to
-# stats\download-stats.csv (git-ignored) so you can see the trend week to week.
+# stats\download-stats.csv (git-ignored), and the totals table shows the change
+# since the previous run in that file plus the change over the last 7 days.
 #
 # It also rewrites downloads.json at the repo root (committed, public) with the
 # total per PUBLIC repo; scripts\build-site.ps1 uses it to order the homepage
@@ -76,17 +77,101 @@ $totals = $rows |
     } |
     Sort-Object Repo
 
-$totals | Format-Table Repo, @{ Label = 'Total downloads'; Expression = { $_.Downloads }; Align = 'Right' } -AutoSize | Out-Host
-$grand = [long]($totals | Measure-Object Downloads -Sum).Sum
-Write-Host ("Grand total: {0} downloads across {1} repos" -f $grand, @($totals).Count)
-
-# Trend log: one row per repo per run.
+# Trend log: read the earlier runs before this one is appended.
 $statsDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'stats'
 if (-not (Test-Path $statsDir)) { New-Item -ItemType Directory -Path $statsDir | Out-Null }
 $csv = Join-Path $statsDir 'download-stats.csv'
-$today = Get-Date -Format 'yyyy-MM-dd'
+$inv = [Globalization.CultureInfo]::InvariantCulture
+$now = Get-Date
+$today = $now.ToString('yyyy-MM-dd', $inv)
+
+# Split the log back into runs. Older rows carry only a date and one day can
+# hold several runs, so a run also ends when a repo turns up a second time.
+$runs = New-Object System.Collections.Generic.List[object]
+if (Test-Path $csv) {
+    $run = $null
+    foreach ($r in @(Import-Csv -Path $csv)) {
+        if (-not $run -or $run.Stamp -ne $r.Date -or $run.Totals.ContainsKey($r.Repo)) {
+            $run = [pscustomobject]@{
+                Stamp   = $r.Date
+                When    = [datetime]::ParseExact($r.Date, [string[]]@('yyyy-MM-dd HH:mm', 'yyyy-MM-dd'), $inv, 'None')
+                HasTime = $r.Date.Length -gt 10
+                Totals  = @{}
+            }
+            $runs.Add($run)
+        }
+        $run.Totals[$r.Repo] = [long]$r.TotalDownloads
+    }
+}
+$prev = if ($runs.Count) { $runs[$runs.Count - 1] } else { $null }   # 5.1 lists don't take [-1]
+
+function Get-RunLabel($Run) {
+    if ($Run.HasTime) { $Run.When.ToString('d MMM yyyy, HH:mm', $inv) } else { $Run.When.ToString('d MMM yyyy', $inv) }
+}
+
+# Returns the change text and its colour. Colour goes through Write-Host
+# -ForegroundColor rather than ANSI codes so 5.1's console shows it too.
+function Get-Change([long]$Current, $Before) {
+    if ($null -eq $Before) { return 'new', 'Cyan' }
+    $d = $Current - [long]$Before
+    if ($d -gt 0) { return "+$d", 'Green' }
+    if ($d -eq 0) { return '+0', 'DarkGray' }
+    return "$d", 'Yellow'
+}
+
+$grand = [long]($totals | Measure-Object Downloads -Sum).Sum
+$repoWidth = [Math]::Max(11, [int]($totals | ForEach-Object { $_.Repo.Length } | Measure-Object -Maximum).Maximum)
+$numWidth = [Math]::Max(5, "$grand".Length)
+$fmt = "{0,-$repoWidth}  {1,$numWidth}"
+
+Write-Host ''
+if ($prev) {
+    Write-Host (($fmt -f 'Repo', 'Total') + '   Change')
+    Write-Host (($fmt -f '----', '-----') + '   ------')
+} else {
+    Write-Host ($fmt -f 'Repo', 'Total')
+    Write-Host ($fmt -f '----', '-----')
+}
+foreach ($t in $totals) {
+    $line = $fmt -f $t.Repo, $t.Downloads
+    if ($prev) {
+        $text, $colour = Get-Change $t.Downloads $prev.Totals[$t.Repo]
+        Write-Host ($line + '   ') -NoNewline
+        Write-Host $text -ForegroundColor $colour
+    } else {
+        Write-Host $line
+    }
+}
+$line = $fmt -f 'Grand total', $grand
+if ($prev) {
+    $text, $colour = Get-Change $grand ($prev.Totals.Values | Measure-Object -Sum).Sum
+    Write-Host ($line + '   ') -NoNewline
+    Write-Host $text.PadRight(6) -ForegroundColor $colour -NoNewline
+    Write-Host "(since $(Get-RunLabel $prev))"
+
+    # The run nearest to a week ago, if one falls within two days of it.
+    $weekAgo = $now.AddDays(-7)
+    $week = $runs |
+        Where-Object { [Math]::Abs(($_.When - $weekAgo).TotalDays) -le 2 } |
+        Sort-Object { [Math]::Abs(($_.When - $weekAgo).TotalDays) } |
+        Select-Object -First 1
+    if ($week) {
+        $text, $colour = Get-Change $grand ($week.Totals.Values | Measure-Object -Sum).Sum
+        Write-Host 'Last 7 days: ' -NoNewline
+        Write-Host $text.PadRight(6) -ForegroundColor $colour -NoNewline
+        Write-Host "(since $(Get-RunLabel $week))"
+    } else {
+        Write-Host "Last 7 days: no run from around $($weekAgo.ToString('d MMM', $inv)) yet" -ForegroundColor DarkGray
+    }
+} else {
+    Write-Host $line
+}
+Write-Host ''
+
+# One row per repo per run, stamped with date and time (older rows are date-only).
+$stamp = $now.ToString('yyyy-MM-dd HH:mm', $inv)
 $totals |
-    ForEach-Object { [pscustomobject]@{ Date = $today; Repo = $_.Repo; TotalDownloads = $_.Downloads } } |
+    ForEach-Object { [pscustomobject]@{ Date = $stamp; Repo = $_.Repo; TotalDownloads = $_.Downloads } } |
     Export-Csv -Path $csv -Append -NoTypeInformation -Encoding UTF8
 Write-Host "Appended $(@($totals).Count) rows to $csv"
 
