@@ -11,7 +11,9 @@
 #
 # It also rewrites downloads.json at the repo root (committed, public) with the
 # total per PUBLIC repo; scripts\build-site.ps1 uses it to order the homepage
-# cards within each category. Private repos never go into that file.
+# cards within each category. Private repos never go into that file. At the end
+# it asks whether to run build-site.ps1 now and shows the resulting git diff;
+# it never commits or pushes.
 #
 # Keep this file ASCII-only: Windows PowerShell 5.1 misreads UTF-8 without a BOM.
 
@@ -182,4 +184,26 @@ foreach ($t in $totals) {
 }
 $jsonPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'downloads.json'
 [IO.File]::WriteAllText($jsonPath, ($json | ConvertTo-Json) + "`n", (New-Object Text.UTF8Encoding $false))
-Write-Host "Wrote $jsonPath - run scripts\build-site.ps1 to re-order the homepage."
+Write-Host "Wrote $jsonPath"
+
+# Offer to rebuild the homepage with the new order. This only touches files:
+# committing and pushing is left to you. Where nobody can answer (e.g. run with
+# -NonInteractive) Read-Host throws, which counts as No.
+try { $answer = Read-Host 'Rebuild the site with these numbers? (y/N)' } catch { $answer = '' }
+if ($answer -match '^\s*y(es)?\s*$') {
+    & (Join-Path $PSScriptRoot 'build-site.ps1')
+    $root = Split-Path $PSScriptRoot -Parent
+    Write-Host ''
+    $files = 'downloads.json', 'index.html', 'sitemap.xml'
+    # safecrlf=false silences git's "LF will be replaced by CRLF" warnings.
+    git -C $root -c core.safecrlf=false diff --quiet -- $files
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host 'No changes to the site files.'
+    } else {
+        git -C $root -c core.safecrlf=false --no-pager diff --stat -- $files
+        git -C $root -c core.safecrlf=false --no-pager diff -- $files
+        Write-Host 'Nothing committed or pushed.'
+    }
+} else {
+    Write-Host 'Site not rebuilt - run scripts\build-site.ps1 to re-order the homepage.'
+}
