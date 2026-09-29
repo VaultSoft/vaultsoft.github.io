@@ -178,12 +178,16 @@ $totals |
 Write-Host "Appended $(@($totals).Count) rows to $csv"
 
 # downloads.json for the homepage build: public repos only, keyed "Owner/Repo".
-$json = [ordered]@{ generated = $today; downloads = [ordered]@{} }
-foreach ($t in $totals) {
-    if ($publicRepos -contains $t.Repo) { $json.downloads["$Owner/$($t.Repo)"] = $t.Downloads }
-}
+# Written by hand in Windows PowerShell 5.1's ConvertTo-Json layout, because 7
+# indents differently and every run from the other version showed a whole-file
+# diff. Names need no escaping: GitHub owner/repo names are only [A-Za-z0-9._-].
+$entries = @($totals |
+    Where-Object { $publicRepos -contains $_.Repo } |
+    ForEach-Object { (' ' * 22) + ('"{0}/{1}":  {2}' -f $Owner, $_.Repo, $_.Downloads) })
+$lines = @('{', ('    "generated":  "{0}",' -f $today), '    "downloads":  {') +
+    ($entries -join ",`r`n") + @(((' ' * 18) + '}'), '}')
 $jsonPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'downloads.json'
-[IO.File]::WriteAllText($jsonPath, ($json | ConvertTo-Json) + "`n", (New-Object Text.UTF8Encoding $false))
+[IO.File]::WriteAllText($jsonPath, ($lines -join "`r`n") + "`r`n", (New-Object Text.UTF8Encoding $false))
 Write-Host "Wrote $jsonPath"
 
 # Offer to rebuild the homepage with the new order. This only touches files:
