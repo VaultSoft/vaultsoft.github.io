@@ -11,6 +11,8 @@
 #
 # Apps with "spotlight": true get the band under the hero instead of a card:
 # they are left out of the category grids and the filter bar.
+# Two or more consecutive categories with one app each share a <div class="group-row">
+# so their cards sit side by side; a category with 2+ apps always gets its own block.
 # Card order within a category comes from downloads.json (written by
 # scripts\download-stats.ps1); apps missing from it count as 0 downloads.
 # Running it twice in a row produces no changes.
@@ -178,11 +180,27 @@ foreach ($c in $categories) {
 $filterLines += '    </div>'
 $parts.Add($filterLines -join "`n")
 
-foreach ($c in $categories) {
+$groups = @(foreach ($c in $categories) {
     $inCat = @($gridApps | Where-Object { $_.category -eq $c } |
         Sort-Object @{ Expression = { Get-Downloads $_ }; Descending = $true }, @{ Expression = { $_.name }; Descending = $false })
-    if ($inCat.Count) { $parts.Add((Get-Group $c (Slug $c) $inCat)) }
+    if ($inCat.Count) { [pscustomobject]@{ Count = $inCat.Count; Html = (Get-Group $c (Slug $c) $inCat) } }
+})
+
+# Flush a run of single-app groups: one alone stays as it is, 2+ go into a group-row.
+$run = New-Object System.Collections.Generic.List[string]
+function Add-Run {
+    if ($run.Count -eq 1) { $parts.Add($run[0]) }
+    elseif ($run.Count -gt 1) {
+        $inner = ($run | ForEach-Object { ($_ -split "`n" | ForEach-Object { if ($_) { "  $_" } else { $_ } }) -join "`n" }) -join "`n"
+        $parts.Add((@('    <div class="group-row">', $inner, '    </div>') -join "`n"))
+    }
+    $run.Clear()
 }
+foreach ($g in $groups) {
+    if ($g.Count -eq 1) { $run.Add($g.Html) }
+    else { Add-Run; $parts.Add($g.Html) }
+}
+Add-Run
 $appsHtml = $parts -join "`n`n"
 
 # JSON-LD: one Offer per app. ScribeVault-style work apps are BusinessApplication.
