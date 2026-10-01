@@ -130,9 +130,12 @@ function Get-Group([string]$title, [string]$categorySlug, $groupApps) {
     ) -join "`n"
 }
 
-# Full-width band for a spotlight app: Download is the primary action.
+# Full-width band for a spotlight app: Download is the primary action,
+# except for trial apps, where the app page leads and the trial download follows.
 function Get-Spotlight($app) {
     $ind = '    '
+    $isTrial = $app.badge -match 'trial'
+    $badgeClass = if ($isTrial) { 'tag tag-trial' } else { 'tag' }
     $viewLabel = if ($app.link -match '^https://github\.com/') { 'View on GitHub' } else { 'View App' }
     $dlHref = if ($app.download) { $app.download } else { $app.link }
     $lines = @(
@@ -148,13 +151,18 @@ function Get-Spotlight($app) {
         "$ind    <p>$(Enc $app.description)</p>"
         "$ind    <div class=`"app-tags`">"
         "$ind      <span class=`"tag tag-new`"$(Get-NewAttr $app)>New</span>"
-        "$ind      <span class=`"tag`">$(Enc $app.badge)</span>"
+        "$ind      <span class=`"$badgeClass`">$(Enc $app.badge)</span>"
     )
     if ($app.repo) { $lines += "$ind      <span class=`"tag tag-version`" data-repo=`"$(Enc $app.repo)`"></span>" }
     $lines += "$ind    </div>"
     $lines += "$ind    <div class=`"app-actions`">"
-    $lines += "$ind      <a class=`"btn-view`" href=`"$(Enc $dlHref)`">Download $downSvg</a>"
-    $lines += "$ind      <a class=`"btn-ghost-sm`" href=`"$(Enc $app.link)`">$viewLabel $arrowSvg</a>"
+    if ($isTrial) {
+        $lines += "$ind      <a class=`"btn-view`" href=`"$(Enc $app.link)`">$viewLabel $arrowSvg</a>"
+        $lines += "$ind      <a class=`"btn-ghost-sm`" href=`"$(Enc $dlHref)`">Download free trial $downSvg</a>"
+    } else {
+        $lines += "$ind      <a class=`"btn-view`" href=`"$(Enc $dlHref)`">Download $downSvg</a>"
+        $lines += "$ind      <a class=`"btn-ghost-sm`" href=`"$(Enc $app.link)`">$viewLabel $arrowSvg</a>"
+    }
     $lines += "$ind    </div>"
     $lines += "$ind  </div>"
     $lines += "$ind</div>"
