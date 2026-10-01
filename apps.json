@@ -85,6 +85,7 @@
       "repo": "VaultSoft/scribevault-releases",
       "released": "2026-09-27",
       "icon": "icons/scribevault.svg",
+      "spotlight": true,
       "hub": {
         "mode": "link"
       }
