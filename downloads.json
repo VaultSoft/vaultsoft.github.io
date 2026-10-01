@@ -1,13 +1,13 @@
 {
-    "generated":  "2026-09-29",
+    "generated":  "2026-10-01",
     "downloads":  {
                       "VaultSoft/BatteryVault":  5,
                       "VaultSoft/FileFlow":  4,
-                      "VaultSoft/PulseMonitor":  530,
+                      "VaultSoft/PulseMonitor":  535,
                       "VaultSoft/scribevault-releases":  4,
-                      "VaultSoft/sound-vault":  113,
-                      "VaultSoft/SweptPC":  249,
+                      "VaultSoft/sound-vault":  114,
+                      "VaultSoft/SweptPC":  255,
                       "VaultSoft/vaultsoft-hub":  17,
-                      "VaultSoft/WaveScout":  127
+                      "VaultSoft/WaveScout":  136
                   }
 }
